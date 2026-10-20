@@ -230,9 +230,22 @@
   var track = document.getElementById("hero-track"), frameEl = document.getElementById("hero-frame");
   var scene = document.getElementById("intro-scene"), island = document.getElementById("intro-island");
   var notchEl = document.getElementById("intro-notch"), lid = frameEl && frameEl.querySelector(".lid");
-  var mac = frameEl && frameEl.querySelector(".mac");
+  var mac = frameEl && frameEl.querySelector(".mac"), deck = frameEl && frameEl.querySelector(".deck"), edge = frameEl && frameEl.querySelector(".deck-edge");
+  var lidFront = frameEl && frameEl.querySelector(".lid-front"), lidBack = frameEl && frameEl.querySelector(".lid-back");
   var inner = island && island.querySelector(".island-inner"), ear = island && island.querySelector(".ear");
   var geo = null, done = false;
+
+  /* 4x4 matrices (row-major) for the Mac's parts, emitted as CSS matrix3d (column-major) */
+  function T(x, y, z) { return [[1, 0, 0, x], [0, 1, 0, y], [0, 0, 1, z], [0, 0, 0, 1]]; }
+  function RX(deg) { var r = deg * Math.PI / 180, c = Math.cos(r), sn = Math.sin(r);
+    return [[1, 0, 0, 0], [0, c, -sn, 0], [0, sn, c, 0], [0, 0, 0, 1]]; }
+  function PERSP(d) { return [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, -1 / d, 1]]; }
+  function mul(a, b) { var r = [], i, j, k;
+    for (i = 0; i < 4; i++) { r[i] = []; for (j = 0; j < 4; j++) { var v = 0; for (k = 0; k < 4; k++) v += a[i][k] * b[k][j]; r[i][j] = v; } }
+    return r; }
+  function m3d(list) { var m = list.reduce(mul), out = [], i, j;
+    for (j = 0; j < 4; j++) for (i = 0; i < 4; i++) out.push(+m[i][j].toFixed(6));
+    return "matrix3d(" + out.join(",") + ")"; }
 
   function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
   function seg(p, a, b) { return clamp01((p - a) / (b - a)); }
@@ -241,13 +254,13 @@
   function fit(w, h) { return Math.min(w / 112, h / 120); }       // the blob's viewBox is 112 x 120
 
   function measure() {
-    var keep = [lid.style.transform, scene.style.transform, mac.style.perspectiveOrigin];
+    var keep = [lid.style.transform, scene.style.transform];
     lid.style.transform = "none"; scene.style.transform = "none";
     var f = frameEl.getBoundingClientRect(), n = notchEl.getBoundingClientRect(), m = mac.getBoundingClientRect();
-    lid.style.transform = keep[0]; scene.style.transform = keep[1]; mac.style.perspectiveOrigin = keep[2];
+    lid.style.transform = keep[0]; scene.style.transform = keep[1];
     var S = (f.width * 0.26) / n.width;                             // notch to a quarter of the frame
     var g = { f: f, S: S, cx: n.left - f.left + n.width / 2, cy: n.top - f.top + n.height / 2,
-      tx: f.width / 2, ty: f.height * 0.3, nw: n.width, nh: n.height, macH: m.height };
+      tx: f.width / 2, ty: f.height * 0.3, nw: n.width, nh: n.height, macH: m.height, lidH: lid.offsetHeight, lidW: lid.offsetWidth };
     g.w0 = g.nw * S; g.h0 = g.nh * S; g.w1 = Math.min(Math.max(f.width * 0.94, 320), window.innerWidth - 24); g.h1 = g.w1 * 0.38;
     g.r0 = Math.min(g.h0 / 2, 6 * S); g.top = g.ty - g.h0 / 2;
     g.drop = window.innerHeight - (f.top + g.top) + 80;              // far enough to sink out of view
@@ -266,9 +279,23 @@
     if (!geo) measure();
     var g = geo;
     // 1. lid opens, camera drops from above to the hinge
-    var o = inOut(seg(p, 0, 0.26));
-    lid.style.transform = "rotateX(" + (-90 + 90 * o) + "deg)";
-    mac.style.perspectiveOrigin = "50% " + (-70 + 170 * o) + "%";
+    var o = inOut(seg(p, 0, 0.26)), theta = -90 + 90 * o;
+    // The eye starts above the hinge (1.7 lid-heights up) and drops to hinge level. Perspective
+    // is built into each part's own transform, shifted so both share that eye: WebKit ignores a
+    // parent's perspective here, which flattened the lid and hid the deck.
+    var ey = (-1.7 + 1.7 * o) * g.lidH, P = 1500, W = g.lidW, L = g.lidH;
+    // Each part gets one explicit projective matrix (origin 0 0): eye shift, perspective with the
+    // vanishing point on the Mac's centre line, then the part's own rotation. Chrome and WebKit
+    // then draw exactly the same thing; WebKit misplaced perspective() and ignored a parent's.
+    var view = [T(W / 2, 0, 0), T(0, ey, 0), PERSP(P), T(0, -ey, 0)];
+    lid.style.transform = m3d([T(0, L, 0)].concat(view, [RX(theta), T(-W / 2, -L, 0)]));   // view applied at the hinge
+    deck.style.transform = m3d([T(0, 3, 0)].concat(view, [RX(90), T(-W / 2, 0, 0)]));
+    edge.style.transform = m3d([T(0, 3, 0)].concat(view, [RX(90), T(0, L, 0), RX(-90), T(-W / 2, 0, 0)]));
+    // show the screen or the lid's back from the real viewing angle, not backface-visibility
+    var a = -theta * Math.PI / 180, front = ey * Math.sin(a) + P * Math.cos(a) > 0;
+    lidFront.style.visibility = front ? "visible" : "hidden";
+    lidBack.style.visibility = front ? "hidden" : "visible";
+    deck.classList.toggle("covered", !front);              // shut: the lid covers the keyboard
     // 2. zoom into the notch; 4. keep going up and out
     var z = inOut(seg(p, 0.27, 0.50)), S = Math.pow(g.S, z);
     var px = g.cx + (g.tx - g.cx) * z, py = g.cy + (g.ty - g.cy) * z;
@@ -304,6 +331,80 @@
     }
   }
 
+  /* Stepping through the page (the opening's stops, then each section). Native mandatory snapping can't hold a stop per gesture:
+     a trackpad flick plus its momentum runs past a stop, and small wheel deltas snap back.
+     So inside the opening one gesture (wheel, trackpad, swipe or key) moves exactly one stop,
+     scrolled by hand with snapping paused, and input is then ignored until the wheel stream
+     goes quiet for 150 ms (the end of trackpad momentum). CSS snap stays as the fallback for
+     scrollbar drags and when this script doesn't run. */
+  function stepThroughOpening(stopEls) {
+    var root = document.documentElement;
+    var animating = false, consumed = false, lastWheel = 0, arrived = 0, touchY = null;
+    function points() {                                // the opening's stops, then every section, then the end
+      var pts = [0];
+      stopEls.forEach(function (el) { pts.push(el.offsetTop + track.offsetTop); });
+      document.querySelectorAll("main > section").forEach(function (sec) { pts.push(sec.offsetTop); });
+      pts.push(root.scrollHeight - window.innerHeight);
+      return pts.sort(function (a, b) { return a - b; });
+    }
+    function next(dir) {
+      var pts = points(), y = window.scrollY, i;
+      if (dir > 0) { for (i = 0; i < pts.length; i++) if (pts[i] > y + 2) return pts[i]; }
+      else { for (i = pts.length - 1; i >= 0; i--) if (pts[i] < y - 2) return pts[i]; }
+      return null;
+    }
+    // step only when the next stop is within a screen; a section taller than the screen
+    // (small phones) scrolls natively until its end first, so nothing is skipped
+    function inOpening(dir) {
+      var t = next(dir);
+      return t !== null && Math.abs(t - window.scrollY) <= window.innerHeight + 2;
+    }
+    function step(dir) {
+      var y = window.scrollY, target = next(dir);
+      if (target === null) return;
+      animating = true; root.style.scrollSnapType = "none";
+      var from = y, t0 = performance.now(), dur = Math.min(1100, 450 + Math.abs(target - from) * 0.6);
+      (function frame(now) {
+        var k = Math.min(1, (now - t0) / dur), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+        window.scrollTo(0, from + (target - from) * e);
+        if (k < 1) requestAnimationFrame(frame);
+        else { window.scrollTo(0, target); root.style.scrollSnapType = ""; animating = false; arrived = performance.now(); }
+      })(t0);
+    }
+    window.addEventListener("wheel", function (e) {
+      var dir = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0;
+      if (!dir || e.ctrlKey) return;                    // ctrl+wheel is pinch-zoom
+      // gaps use the event's own creation time: while the animation keeps the page busy, queued
+      // momentum events arrive in bursts, and handler time would show false "pauses"
+      var gap = e.timeStamp - lastWheel;
+      lastWheel = e.timeStamp;
+      if (!animating && !inOpening(dir)) return;        // no stop within a screen: native scrolling
+      e.preventDefault();
+      if (gap > 150) consumed = false;                   // a pause means a new gesture, not momentum
+      if (animating || consumed || Math.abs(e.deltaY) < 4) return;
+      if (performance.now() - arrived < 500) { consumed = true; return; }   // each stop holds a moment
+      consumed = true; step(dir);
+    }, { passive: false });
+    window.addEventListener("touchstart", function (e) { touchY = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener("touchmove", function (e) {
+      if (touchY === null) return;
+      var dir = touchY - e.touches[0].clientY > 0 ? 1 : -1;
+      if (animating || inOpening(dir)) e.preventDefault();
+    }, { passive: false });
+    window.addEventListener("touchend", function (e) {
+      if (touchY === null) return;
+      var dy = touchY - e.changedTouches[0].clientY, dir = dy > 0 ? 1 : -1;
+      touchY = null;
+      if (Math.abs(dy) > 24 && !animating && inOpening(dir)) step(dir);
+    }, { passive: true });
+    window.addEventListener("keydown", function (e) {
+      var k = e.key, dir = (k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey)) ? 1
+        : (k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey)) ? -1 : 0;
+      if (!dir || /input|textarea|select/i.test((e.target.tagName || "")) || !inOpening(dir)) return;
+      e.preventDefault(); if (!animating) step(dir);
+    });
+  }
+
   var ticking = false;
   function onScroll() {
     if (ticking) return; ticking = true;
@@ -314,7 +415,7 @@
     });
   }
 
-  if (track && frameEl && scene && island && notchEl && lid && mac && inner && !reduce) {
+  if (track && frameEl && scene && island && notchEl && lid && mac && deck && edge && lidFront && lidBack && inner && !reduce) {
     window.addEventListener("scroll", onScroll, { passive: true });
     // scroll stops sit where the animation reaches each stage (see .hero-stop)
     var stops = track.querySelectorAll(".hero-stop");
@@ -324,6 +425,7 @@
     }
     placeStops();
     window.addEventListener("resize", function () { geo = null; placeStops(); onScroll(); });
+    stepThroughOpening(stops);
     onScroll();
   } else {
     document.documentElement.classList.remove("scrub");

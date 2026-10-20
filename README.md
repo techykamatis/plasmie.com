@@ -21,6 +21,7 @@ Plain static HTML and CSS, a little JavaScript for the animated mascot, no frame
 | `assets/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png` | Icons |
 | `assets/og.png` | Social preview, 1200×630 |
 | `tools/og.html`, `tools/icons.html` | Sources for the PNGs above |
+| `tools/scroll-test.js` | Checks that each scroll gesture moves exactly one stop (Playwright, Chromium or WebKit) |
 
 ## Preview
 

@@ -189,27 +189,31 @@ footer .wrap { align-items: center; display: flex; flex-wrap: wrap; justify-cont
 .scene { position: absolute; inset: 0; transform-origin: 0 0; }
 /* The Mac is two hinged planes: the deck lies flat, the lid starts shut on top of it
    (back cover up) and swings up around the rear hinge until the screen faces you. */
-.mac { position: absolute; left: 10%; width: 80%; top: 14%; perspective: 1500px; perspective-origin: 50% -70%; }
+.mac { position: absolute; left: 10%; width: 80%; top: 14%; }
+.scrub .lid, .scrub .deck, .scrub .deck-edge { transform-origin: 0 0; }   /* matrices are built with origin 0 0 */  /* perspective lives in each part's transform (plasmie.js) */
 .lid {
   position: relative; aspect-ratio: 16 / 10.4; transform-style: preserve-3d;
   transform-origin: 50% 100%; transform: rotateX(-90deg);
 }
-.lid-front, .lid-back { position: absolute; inset: 0; border-radius: 14px 14px 4px 4px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+/* which face shows is chosen in plasmie.js from the viewing angle (WebKit ignores backface-visibility here) */
+.lid-front, .lid-back { position: absolute; inset: 0; border-radius: 14px 14px 4px 4px; }
 /* dark mode: a lighter rim and a soft pink glow keep the black bezel visible */
 .lid-front { background: var(--bezel); padding: 2.2% 2.2% 2.8%; box-shadow: 0 0 0 1px var(--mac-edge), var(--mac-glow); }
-.lid-back { background: var(--mac-alu); transform: rotateY(180deg); box-shadow: inset 0 0 0 1px var(--mac-alu-2); }
+.lid-back { background: var(--mac-alu); box-shadow: inset 0 0 0 1px var(--mac-alu-2); visibility: hidden; }
 .screen { position: relative; height: 100%; background: var(--mac-screen); border-radius: 6px 6px 2px 2px; }
 .menubar { height: 5%; background: var(--mac-bar); border-radius: 6px 6px 0 0; }
 /* the notch reaches up into the bezel so no seam shows between them, even zoomed in */
 .notch-cut { position: absolute; top: -2px; left: 50%; width: 15%; height: calc(5.6% + 2px); transform: translateX(-50%); background: var(--bezel); border-radius: 0 0 6px 6px; }
 .deck {
   position: absolute; left: 0; right: 0; top: 100%; aspect-ratio: 16 / 10.4;
-  background: var(--mac-alu); border-radius: 4px 4px 14px 14px; transform-style: preserve-3d;
+  background: var(--mac-alu); border-radius: 4px 4px 14px 14px;
   transform-origin: 50% 0; transform: translateY(3px) rotateX(90deg);
 }
 .deck .keys { position: absolute; left: 9%; right: 9%; top: 8%; height: 42%; background: var(--mac-alu-2); border-radius: 6px; }
+.deck.covered .keys, .deck.covered .pad { visibility: hidden; }
 .deck .pad { position: absolute; left: 33%; right: 33%; top: 58%; height: 32%; border: 1px solid var(--mac-alu-2); border-radius: 8px; }
-.deck-edge { position: absolute; left: 0; right: 0; top: 100%; height: 12px; background: var(--mac-alu-2); border-radius: 0 0 10px 10px; transform-origin: 50% 0; transform: rotateX(-90deg); }
+/* the deck's front edge: its own transform walks along the deck plane, then stands up (plasmie.js) */
+.deck-edge { position: absolute; left: 0; right: 0; top: 100%; height: 12px; background: var(--mac-alu-2); border-radius: 0 0 10px 10px; transform-origin: 50% 0; }
 .island {
   position: absolute; left: 50%; top: 0; width: 0; height: 0; visibility: hidden;
   transform: translateX(-50%); background: var(--bezel); overflow: hidden;
