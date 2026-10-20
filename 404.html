@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found · Plasmie</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#FDF1F4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1E1218" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FDF1F4" media="(prefers-color-scheme: light)" data-color="#FDF1F4" data-media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E1218" media="(prefers-color-scheme: dark)" data-color="#1E1218" data-media="(prefers-color-scheme: dark)">
+<script>try { var t = localStorage.getItem("plasmie-theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}</script>
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -25,7 +26,16 @@
 </style>
 </head>
 <body>
-<header class="top"><div class="notch" aria-hidden="true"><span class="ear" data-plasmie="error"></span></div></header>
+<header class="top">
+  <div class="notch" aria-hidden="true"><span class="ear" data-plasmie="error"></span></div>
+  <nav aria-label="Display">
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Light" title="Light"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Dark" title="Dark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 10.1A6 6 0 0 1 5.9 2.4a6 6 0 1 0 7.7 7.7Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+      <button type="button" data-theme-set="auto" aria-pressed="true" aria-label="Auto, match my system" title="Auto: match my system"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2a6 6 0 0 1 0 12Z" fill="currentColor"/></svg></button>
+    </div>
+  </nav>
+</header>
 <main class="wrap lost">
   <div>
     <h1>Nothing here</h1>
@@ -36,5 +46,6 @@
 </main>
 <script src="/assets/plasmie-shapes.js" defer></script>
 <script src="/assets/plasmie.js" defer></script>
+<script src="/assets/theme.js" defer></script>
 </body>
 </html>

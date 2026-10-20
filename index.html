@@ -6,8 +6,9 @@
 <title>Plasmie, a private work memory for your Mac</title>
 <meta name="description" content="Plasmie lives beside your MacBook's notch. It keeps notes on your work day and answers questions about them with Apple's on-device model. Everything runs on your Mac.">
 <link rel="canonical" href="https://plasmie.com/">
-<meta name="theme-color" content="#FDF1F4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1E1218" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FDF1F4" media="(prefers-color-scheme: light)" data-color="#FDF1F4" data-media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E1218" media="(prefers-color-scheme: dark)" data-color="#1E1218" data-media="(prefers-color-scheme: dark)">
+<script>try { var t = localStorage.getItem("plasmie-theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://plasmie.com/">
 <meta property="og:site_name" content="Plasmie">
@@ -35,9 +36,18 @@
 <header class="top">
   <div class="notch" aria-hidden="true"><span class="ear" id="notch-blob" data-plasmie="idle"></span></div>
   <nav aria-label="Sections">
-    <a href="#day">How it works</a>
-    <a href="#private">Privacy</a>
-    <a href="#install" class="nav-get">Install</a>
+    <div class="links">
+      <a href="#day">How it works</a>
+      <a href="#private">Privacy</a>
+      <a href="#install" class="nav-get">Install</a>
+      <!-- TODO(github): same as the footer -->
+      <span class="soon nav-soon" aria-disabled="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub <small>Coming soon</small></span>
+    </div>
+    <div class="theme" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Light" title="Light"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Dark" title="Dark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 10.1A6 6 0 0 1 5.9 2.4a6 6 0 1 0 7.7 7.7Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+      <button type="button" data-theme-set="auto" aria-pressed="true" aria-label="Auto, match my system" title="Auto: match my system"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2a6 6 0 0 1 0 12Z" fill="currentColor"/></svg></button>
+    </div>
   </nav>
 </header>
 
@@ -190,11 +200,15 @@
 <footer>
   <div class="wrap">
     <span>Plasmie 0.11.0 for macOS</span>
+    <!-- TODO(github): the repo isn't public yet. When it is, turn this span into
+         <a href="https://github.com/OWNER/REPO"> and drop the "Coming soon" tag. -->
+    <span class="soon" aria-disabled="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub <small>Coming soon</small></span>
     <a href="#main">Back to top</a>
   </div>
 </footer>
 
 <script src="/assets/plasmie-shapes.js" defer></script>
 <script src="/assets/plasmie.js" defer></script>
+<script src="/assets/theme.js" defer></script>
 </body>
 </html>
