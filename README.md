@@ -37,7 +37,7 @@ Then open http://localhost:8000. Use a server rather than opening the file direc
 - **Install steps.** The "Open Anyway" steps sit between `INSTALL-PROMPT` comments in `index.html`. Edit or remove them when the install no longer needs that step.
 - **GitHub.** There is no GitHub link for now. Search for `TODO(github)` in `index.html` (header nav and footer) and add one when the repo is public.
 - **Privacy & Security shortcut.** Install step 3 has an "Open Privacy & Security" button (`x-apple.systempreferences:` link), shown only on Macs. It sits inside the `INSTALL-PROMPT` markers, so it goes when those steps go.
-- **Version.** `0.11.0` appears in the hero and the footer.
+- **Version.** The version appears in the hero and the footer, each inside `<span data-plasmie-version>`. Don't edit it by hand: `/release` in the Plasmie repo rewrites every such span to the released version (`release.py site-version`) after a release is published, so the site always names the latest released build.
 
 ## Deploy (GitHub Pages)
 
