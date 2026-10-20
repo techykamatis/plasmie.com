@@ -223,7 +223,7 @@
      0.51-0.67  the notch itself grows into the island, revealing Plasmie inside
      0.68-0.93  Plasmie pops up out of the island and grows to full size, while the
                 island and the Mac sink down out of view
-     0.94+      the status cycle runs */
+     0.94+      the status cycle runs, starting with hi */
   var track = document.getElementById("hero-track"), frameEl = document.getElementById("hero-frame");
   var scene = document.getElementById("intro-scene"), island = document.getElementById("intro-island");
   var notchEl = document.getElementById("intro-notch"), lid = frameEl && frameEl.querySelector(".lid");
@@ -293,9 +293,12 @@
     }
     var finished = p >= 0.94;
     frameEl.classList.toggle("finished", finished);
-    if (finished && !done) { done = true; running = wantRun; last = performance.now(); }
-    if (!finished && done) { done = false; running = false; if (idx !== 0) show(0); }
-    if (!finished && idx !== 0) show(0);
+    // in the notch and on the way out Plasmie rests; it says hi once the rotation starts
+    if (finished && !done) { done = true; show(0); running = wantRun; last = performance.now(); }
+    if (!finished) {
+      done = false; running = false; idx = 0;
+      if (hero && hero.__blob.state !== "idle") morph(hero.__blob, "idle");
+    }
   }
 
   var ticking = false;
