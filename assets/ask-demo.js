@@ -9,12 +9,14 @@
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var QUESTION = "What did we decide about the release checklist?";
-  var ANSWER = "On Tuesday you agreed to ship on Thursday instead, so the database migration lands first. " +
-    "The checklist gained a rollback step and a QA sign-off. Two items are still open: update the changelog and tag the build.";
+  var ANSWER = "On Tuesday you decided to ship on Thursday, so the database migration lands first. " +
+    "The release checklist gained a rollback step and a QA sign-off. Two items are still open: update the changelog and tag the build.";
+  /* Sources are always the user's own notes. Pills mirror the app: [type tag] Note title,
+     with the type labels and dot colours of Plasmie's map filters. */
   var SOURCES = [
-    ["Release checklist", "wiki"],
+    ["Release checklist", "note"],
     ["Daily digest, Tue 14 Oct", "digest"],
-    ["PR #482: Add rollback step", "github"]
+    ["Ship on Thursday", "decision"]
   ];
 
   function morph(state) { if (window.Plasmie) window.Plasmie.morph(blob, state); }
@@ -25,7 +27,7 @@
   }
   function addSource(s) {
     var li = document.createElement("li");
-    li.innerHTML = '<span class="src-kind">' + s[1] + "</span>" + s[0];
+    li.innerHTML = '<span class="src-kind" data-type="' + s[1] + '"><i aria-hidden="true"></i>' + s[1] + "</span>" + s[0];
     src.appendChild(li);
   }
   function finished() {

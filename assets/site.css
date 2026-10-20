@@ -376,7 +376,20 @@ footer { scroll-snap-align: end; }
   border: 1px solid var(--rule-strong); border-radius: 999px; padding: 4px 10px 4px 4px; background: var(--ground);
   text-decoration: underline; text-decoration-color: var(--rule-strong); text-underline-offset: 2px;
 }
-.src-kind { font-size: .72rem; font-weight: 600; color: var(--ink-2); background: var(--rule); border-radius: 999px; padding: 2px 7px; text-decoration: none; }
+.src-kind { display: inline-flex; align-items: center; gap: 5px; font-size: .72rem; font-weight: 600; color: var(--ink-2); background: var(--rule); border-radius: 999px; padding: 2px 8px 2px 6px; text-decoration: none; }
+/* type dots: the map's type colours (MapPalette.swift); digests have no map colour, so neutral */
+.src-kind i { width: 7px; height: 7px; border-radius: 50%; background: var(--type, var(--ink-3)); flex: none; }
+.src-kind[data-type="note"], .src-kind[data-type="map"] { --type: #6B7285; }
+.src-kind[data-type="decision"] { --type: #FFC94A; }
+.src-kind[data-type="gotcha"] { --type: #6EC5F0; }
+.src-kind[data-type="pattern"] { --type: #6CC18E; }
+.src-kind[data-type="how-to"] { --type: #2A2E3A; }
+:root[data-theme="dark"] .src-kind[data-type="note"], :root[data-theme="dark"] .src-kind[data-type="map"] { --type: #A3AABA; }
+:root[data-theme="dark"] .src-kind[data-type="how-to"] { --type: #DADDE4; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .src-kind[data-type="note"], :root:not([data-theme="light"]) .src-kind[data-type="map"] { --type: #A3AABA; }
+  :root:not([data-theme="light"]) .src-kind[data-type="how-to"] { --type: #DADDE4; }
+}
 @media (max-width: 900px) { .ask-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); } }
 @media (max-width: 520px) {
   .ask-points { margin-top: var(--space-md); font-size: .92rem; }
