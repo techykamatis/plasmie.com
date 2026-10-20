@@ -218,9 +218,10 @@ footer .wrap { align-items: center; display: flex; flex-wrap: wrap; justify-cont
 .lid-front, .lid-back { position: absolute; inset: 0; border-radius: 14px 14px 4px 4px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .lid-front { background: var(--bezel); padding: 2.2% 2.2% 2.8%; box-shadow: 0 0 0 1px var(--mac-edge); }
 .lid-back { background: var(--mac-alu); transform: rotateY(180deg); box-shadow: inset 0 0 0 1px var(--mac-alu-2); }
-.screen { position: relative; height: 100%; background: var(--mac-screen); border-radius: 6px 6px 2px 2px; overflow: hidden; }
-.menubar { height: 5%; background: var(--mac-bar); }
-.notch-cut { position: absolute; top: 0; left: 50%; width: 15%; height: 5.6%; transform: translateX(-50%); background: var(--bezel); border-radius: 0 0 6px 6px; }
+.screen { position: relative; height: 100%; background: var(--mac-screen); border-radius: 6px 6px 2px 2px; }
+.menubar { height: 5%; background: var(--mac-bar); border-radius: 6px 6px 0 0; }
+/* the notch reaches up into the bezel so no seam shows between them, even zoomed in */
+.notch-cut { position: absolute; top: -6px; left: 50%; width: 15%; height: calc(5.6% + 6px); transform: translateX(-50%); background: var(--bezel); border-radius: 0 0 6px 6px; }
 .deck {
   position: absolute; left: 0; right: 0; top: 100%; aspect-ratio: 16 / 10.4;
   background: var(--mac-alu); border-radius: 4px 4px 14px 14px; transform-style: preserve-3d;
@@ -319,6 +320,5 @@ footer { scroll-snap-align: end; }
 .scrub .hero-track { height: 260svh; }
 .scrub .hero-pin { position: sticky; top: 0; height: 100svh; display: grid; align-content: center; overflow: hidden; }
 .scrub .hero-pin .hero { min-height: 0; }
-.hero-end { position: absolute; left: 0; bottom: 0; width: 1px; height: 1px; scroll-snap-align: end; }
 /* the track is one tall snap area, so you can scrub freely inside it; it starts at the very top */
 .scrub .hero-track { scroll-snap-align: start; scroll-margin-top: 56px; }

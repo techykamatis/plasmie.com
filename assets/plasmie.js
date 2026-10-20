@@ -53,6 +53,7 @@
 
   function drawFace(B, st, b) {
     var f = DATA.faces[st], col = "var(--face)";
+    if (st === "hi") b = bbox(DATA.shapes.idle);          // the face sits on the body, not the waving arm
     B.face.replaceChildren();
     var cx = b.x + b.w / 2, gap = st === "busy" ? 8 : Math.min(b.w * 0.17, 13), r = st === "busy" ? 3.8 : 4.6;
     var ey = st === "busy" ? b.y + b.h * 0.15 : b.y + Math.min(b.h * 0.42, b.h - 14);
@@ -73,7 +74,7 @@
     }
     eye(cx - gap); eye(cx + gap);
     var my = ey + 9;
-    if (["idle", "success", "held", "promote"].indexOf(st) >= 0) [-1, 1].forEach(function (s) {
+    if (["hi", "idle", "success", "held", "promote"].indexOf(st) >= 0) [-1, 1].forEach(function (s) {
       el("ellipse", { cx: cx + s * (gap + 9), cy: my - 2, rx: 5.5, ry: 3.2, fill: "var(--blush)", opacity: 0.8 }, B.face);
     });
     switch (f.mouth) {
@@ -122,6 +123,12 @@
       case "zzz": for (i = 0; i < 3; i++) { k = (T * 0.35 + i / 3) % 1;
         var z = el("text", { x: cx + 18 + k * 16, y: b.y - 4 - k * 22, "font-family": "'Baloo 2', sans-serif", "font-weight": 800, "font-size": 9 + k * 6, fill: "var(--zzz)", opacity: Math.sin(k * Math.PI) }, B.prop);
         z.textContent = "z"; } break;
+      case "hello": {                                  // a "hi!" bubble beside the raised hand, as in the app
+        var hb = el("g", { transform: "translate(62 4)" }, B.prop);
+        el("path", { d: "M-15,-8.5 H15 A8.5,8.5 0 0 1 15,8.5 H-3 L-11.5,13 L-8,8.5 H-15 A8.5,8.5 0 0 1 -15,-8.5Z", fill: "var(--card)", stroke: "var(--face)", "stroke-width": 1.3, "stroke-linejoin": "round" }, hb);
+        var w = el("text", { x: 0, y: 4, "text-anchor": "middle", "font-family": "'Baloo 2', sans-serif", "font-weight": 800, "font-size": 12, fill: "var(--face)" }, hb);
+        w.textContent = "hi!"; break;
+      }
       case "sparkles": [[-1, -0.2], [1, -0.4], [0.7, 0.9]].forEach(function (s, j) {
         var kk = (T * 1.1 + j * 0.33) % 1;
         star(cx + s[0] * (b.w / 2 + 6), b.y + b.h / 2 + s[1] * (b.h / 2 + 6), Math.sin(kk * Math.PI) * 5 + 1, "var(--spark)", B.prop);

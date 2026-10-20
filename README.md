@@ -46,5 +46,5 @@ Then open http://localhost:8000. Use a server rather than opening the file direc
 
 ## Regenerating assets
 
-- **Mascot shapes:** if the app's shapes change, regenerate `assets/plasmie-shapes.js` from `app/brand/plasmie-shapes.json` (the states used are idle, ingest, summarize, promote, ask, held, error, busy, quiet, off, success).
+- **Mascot shapes:** if the app's shapes change, regenerate `assets/plasmie-shapes.js` from `app/brand/plasmie-shapes.json` (the states used are hi, idle, ingest, summarize, promote, ask, held, error, busy, quiet, off, success).
 - **PNGs:** serve the site, open `/tools/og.html` at 1200×630 and screenshot the card to `assets/og.png`; open `/tools/icons.html` and screenshot each image for the icons.
