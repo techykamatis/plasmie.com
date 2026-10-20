@@ -316,7 +316,14 @@
 
   if (track && frameEl && scene && island && notchEl && lid && mac && inner && !reduce) {
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", function () { geo = null; onScroll(); });
+    // scroll stops sit where the animation reaches each stage (see .hero-stop)
+    var stops = track.querySelectorAll(".hero-stop");
+    function placeStops() {
+      var span = track.offsetHeight - window.innerHeight;
+      stops.forEach(function (el) { el.style.top = Math.round(parseFloat(el.getAttribute("data-p")) * span) + "px"; });
+    }
+    placeStops();
+    window.addEventListener("resize", function () { geo = null; placeStops(); onScroll(); });
     onScroll();
   } else {
     document.documentElement.classList.remove("scrub");

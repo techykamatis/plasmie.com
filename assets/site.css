@@ -288,7 +288,10 @@ footer { scroll-snap-align: end; }
 .scrub .hero-pin { position: sticky; top: 0; height: 100svh; display: grid; align-content: center; overflow: hidden; }
 .scrub .hero-pin .hero { min-height: 0; width: 100%; }
 /* the track is one tall snap area, so you can scrub freely inside it; it starts at the very top */
-.scrub .hero-track { scroll-snap-align: start; scroll-margin-top: 56px; }
+/* the opening locks at three stops (lid open, Plasmie in the island, Plasmie alone);
+   a flick can't skip one */
+.hero-stop { display: none; }
+.scrub .hero-stop { display: block; position: absolute; left: 0; width: 1px; height: 1px; scroll-snap-align: start; scroll-snap-stop: always; }
 /* phones: the opening gets the room; text tightens so both fit one screen */
 @media (max-width: 520px) {
   .scrub .hero-pin .hero { padding-block: 12px; gap: 4px; }
