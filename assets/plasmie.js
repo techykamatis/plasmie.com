@@ -339,7 +339,7 @@
      scrollbar drags and when this script doesn't run. */
   function stepThroughOpening(stopEls) {
     var root = document.documentElement;
-    var animating = false, consumed = false, lastWheel = 0, arrived = 0, touchY = null;
+    var animating = false, consumed = false, lastWheel = 0, lastAbs = 0, stepAt = -1e9, arrived = 0, touchY = null, release = 0;
     function points() {                                // the opening's stops, then every section, then the end
       var pts = [0];
       stopEls.forEach(function (el) { pts.push(el.offsetTop + track.offsetTop); });
@@ -362,13 +362,18 @@
     function step(dir) {
       var y = window.scrollY, target = next(dir);
       if (target === null) return;
-      animating = true; root.style.scrollSnapType = "none";
-      var from = y, t0 = performance.now(), dur = Math.min(1100, 450 + Math.abs(target - from) * 0.6);
+      animating = true; stepAt = performance.now(); root.style.scrollSnapType = "none";
+      var from = y, t0 = performance.now(), dur = Math.min(1100, 450 + Math.abs(target - from) * 0.6), done = false;
+      function finish() {                                 // always runs once: at the end, or by the timeout
+        if (done) return; done = true; clearTimeout(release);
+        window.scrollTo(0, target); root.style.scrollSnapType = ""; animating = false; arrived = performance.now();
+      }
+      release = setTimeout(finish, dur + 300);            // hard release, even if frames stop (hidden tab)
       (function frame(now) {
+        if (done) return;
         var k = Math.min(1, (now - t0) / dur), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
         window.scrollTo(0, from + (target - from) * e);
-        if (k < 1) requestAnimationFrame(frame);
-        else { window.scrollTo(0, target); root.style.scrollSnapType = ""; animating = false; arrived = performance.now(); }
+        if (k < 1) requestAnimationFrame(frame); else finish();
       })(t0);
     }
     window.addEventListener("wheel", function (e) {
@@ -376,13 +381,18 @@
       if (!dir || e.ctrlKey) return;                    // ctrl+wheel is pinch-zoom
       // gaps use the event's own creation time: while the animation keeps the page busy, queued
       // momentum events arrive in bursts, and handler time would show false "pauses"
-      var gap = e.timeStamp - lastWheel;
-      lastWheel = e.timeStamp;
+      var abs = Math.abs(e.deltaY), gap = e.timeStamp - lastWheel, prev = lastAbs, now = performance.now();
+      lastWheel = e.timeStamp; lastAbs = abs;
       if (!animating && !inOpening(dir)) return;        // no stop within a screen: native scrolling
       e.preventDefault();
-      if (gap > 150) consumed = false;                   // a pause means a new gesture, not momentum
-      if (animating || consumed || Math.abs(e.deltaY) < 4) return;
-      if (performance.now() - arrived < 500) { consumed = true; return; }   // each stop holds a moment
+      if (abs < 2) return;                                // resting finger / momentum dust
+      // A step's own momentum must not trigger another, but a NEW swipe must, even one that starts
+      // while momentum is still running. Momentum only decays; a fresh swipe climbs. So re-arm on
+      // a pause, or on a clearly rising delta (sooner than 350 ms is still the same flick).
+      var rising = abs >= 6 && abs > prev * 1.5;
+      if (gap > 150 || (rising && now - stepAt > 350)) consumed = false;
+      if (animating || consumed || abs < 4) return;
+      if (now - arrived < 250) return;                    // a brief hold at each stop
       consumed = true; step(dir);
     }, { passive: false });
     window.addEventListener("touchstart", function (e) { touchY = e.touches[0].clientY; }, { passive: true });
