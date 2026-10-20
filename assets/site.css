@@ -234,7 +234,8 @@ footer .wrap { align-items: center; display: flex; flex-wrap: wrap; justify-cont
 .island {
   position: absolute; left: 50%; top: 0; width: 0; height: 0; visibility: hidden;
   transform: translateX(-50%); background: var(--bezel); overflow: hidden;
-  box-shadow: var(--mac-glow);
+  /* glow on the sides and bottom only: the top edge is where it joins the bezel */
+  box-shadow: var(--mac-glow); clip-path: inset(0 -96px -96px -96px);
 }
 /* laid out at the island's full size; the growing island reveals it */
 .island-inner { position: absolute; left: 50%; top: 0; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; padding: 0 22px; }
