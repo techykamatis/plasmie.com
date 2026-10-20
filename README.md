@@ -35,7 +35,7 @@ Then open http://localhost:8000. Use a server rather than opening the file direc
 
 - **Download link.** Both "Download for Mac" buttons in `index.html` point to the placeholder `/download/Plasmie.dmg`. Search for `TODO(download)` and replace both with the real DMG URL (for example a GitHub release asset: `https://github.com/OWNER/REPO/releases/latest/download/Plasmie.dmg`).
 - **Install steps.** The "Open Anyway" steps sit between `INSTALL-PROMPT` comments in `index.html`. Edit or remove them when the install no longer needs that step.
-- **GitHub.** The header and footer show "GitHub · Coming soon" as plain text, not a link. Search for `TODO(github)` and turn both into `<a href>` links when the repo is public.
+- **GitHub.** There is no GitHub link for now. Search for `TODO(github)` in `index.html` (header nav and footer) and add one when the repo is public.
 - **Privacy & Security shortcut.** Install step 3 has an "Open Privacy & Security" button (`x-apple.systempreferences:` link), shown only on Macs. It sits inside the `INSTALL-PROMPT` markers, so it goes when those steps go.
 - **Version.** `0.11.0` appears in the hero and the footer.
 

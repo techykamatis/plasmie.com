@@ -40,8 +40,7 @@
       <a href="#day">How it works</a>
       <a href="#private">Privacy</a>
       <a href="#install" class="nav-get">Install</a>
-      <!-- TODO(github): same as the footer -->
-      <span class="soon nav-soon" aria-disabled="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub <small>Coming soon</small></span>
+      <!-- TODO(github): add a GitHub link here when the repo is public (removed for now). -->
     </div>
     <div class="theme" role="group" aria-label="Colour theme">
       <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Light" title="Light"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
@@ -59,7 +58,7 @@
     <div>
       <h1>Plasmie</h1>
       <p class="tagline">Remembers your work. Right on your Mac.</p>
-      <p class="lede">A little pink blob that lives beside the notch. It keeps notes on your work day, files what matters, and answers when you ask. Powered by Apple Intelligence, on device.</p>
+      <p class="lede">A little pink blob that lives beside the notch. It keeps notes on your work day, files what’s worth keeping, and answers when you ask. Powered by Apple Intelligence, on device.</p>
       <div class="get">
         <!-- TODO(download): replace with the real DMG URL, e.g. a GitHub release asset
              https://github.com/OWNER/REPO/releases/latest/download/Plasmie.dmg -->
@@ -67,6 +66,7 @@
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16.5h12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Download for Mac
         </a>
+        <p class="phone-note">Plasmie is a Mac app. Open this page on your Mac to download it.</p>
         <p class="fine">Version 0.11.0. Requires a Mac with Apple silicon and macOS&nbsp;26 or later, with Apple Intelligence turned on.</p>
       </div>
     </div>
@@ -117,30 +117,35 @@
 
   <section id="day" aria-labelledby="h-day">
     <div class="wrap">
-      <h2 id="h-day">Works while you work.</h2>
-      <p class="intro">Plasmie runs on a schedule in the background. Nothing to open, nothing to remember.</p>
-      <ol class="day">
+      <h2 id="h-day">What it does each day.</h2>
+      <p class="intro">Switch on the apps you use. Plasmie reads them every hour and files notes overnight.</p>
+      <ol class="timeline">
         <li>
-          <span class="mini" data-plasmie="ingest" role="img" aria-label="Plasmie shaped like a bowl, catching coloured dots"></span>
-          <div><h3>Gathers</h3><span class="when">Every hour</span></div>
-          <p>Slack, GitHub, Confluence, Outlook mail and calendar, local git commits and Claude Code sessions. Turn on the ones you use. Passwords, keys and tokens are scrubbed before anything is saved.</p>
+          <span class="tl-shape" data-plasmie="ingest" role="img" aria-label="Plasmie shaped like a bowl, catching coloured dots"></span>
+          <span class="tl-dot" aria-hidden="true"></span>
+          <h3 class="tl-time">Every hour</h3>
+          <p>Reads the last hour from what you switched on: Slack, GitHub, Confluence, Outlook, local git and Claude Code. Anything that looks like a password, key or token is removed before it’s saved.</p>
         </li>
         <li>
-          <span class="mini" data-plasmie="summarize" role="img" aria-label="Plasmie squashed into a dumpling shape"></span>
-          <div><h3>Summarises</h3><span class="when">Every hour</span></div>
-          <p>A short digest of your day so far, written by Apple’s on-device model.</p>
+          <span class="tl-shape" data-plasmie="summarize" role="img" aria-label="Plasmie squashed into a dumpling shape"></span>
+          <span class="tl-dot" aria-hidden="true"></span>
+          <h3 class="tl-time">Every hour</h3>
+          <p>Updates today’s digest, a short summary written on your Mac.</p>
         </li>
         <li>
-          <span class="mini" data-plasmie="promote" role="img" aria-label="Plasmie shaped like a box, with a note card dropping in"></span>
-          <div><h3>Files</h3><span class="when">Every night, around 2:30&nbsp;am</span></div>
-          <p>What’s worth keeping becomes tagged notes. Anything it isn’t sure about waits for your OK.</p>
+          <span class="tl-shape" data-plasmie="promote" role="img" aria-label="Plasmie shaped like a box, with a note card dropping in"></span>
+          <span class="tl-dot" aria-hidden="true"></span>
+          <h3 class="tl-time">Around 2:30&nbsp;am</h3>
+          <p>Files what’s worth keeping as tagged notes. If it isn’t sure, the note waits for your OK.</p>
         </li>
         <li>
-          <span class="mini" data-plasmie="ask" role="img" aria-label="Plasmie shaped like a lightbulb, with a spark"></span>
-          <div><h3>Answers</h3><span class="when">Anytime, with <kbd>⌃⌥⌘K</kbd></span></div>
-          <p>Ask a question from any app. Answers come only from your notes, with the sources right there to open.</p>
+          <span class="tl-shape" data-plasmie="ask" role="img" aria-label="Plasmie shaped like a lightbulb, with a spark"></span>
+          <span class="tl-dot" aria-hidden="true"></span>
+          <h3 class="tl-time">Next morning</h3>
+          <p><a href="#ask">Ask what you decided yesterday.</a> <kbd>⌃⌥⌘K</kbd>, from any app.</p>
         </li>
       </ol>
+      <p class="tl-note">A work Outlook account often needs your IT admin to approve the connection.</p>
     </div>
   </section>
 
@@ -148,9 +153,9 @@
     <div class="wrap ask-grid">
       <div>
         <h2 id="h-ask">Just ask.</h2>
-        <p class="intro">Press <kbd>⌃⌥⌘K</kbd> in any app and ask about your work. Plasmie answers from your notes, on device, and shows the notes it used.</p>
+        <p class="intro">Press <kbd>⌃⌥⌘K</kbd> in any app and ask about your work. Plasmie answers from your notes, on device.</p>
         <ul class="ask-points">
-          <li>Answers come only from what’s in your notes. It won’t fill gaps with guesses.</li>
+          <li>Answers come only from what’s in your notes. The notes it used are listed under the answer.</li>
           <li>Every source is a link. Click one to open the note.</li>
           <li>Nothing leaves your Mac to answer.</li>
         </ul>
@@ -174,14 +179,14 @@
 
   <section class="private" id="private" aria-labelledby="h-private">
     <div class="wrap">
-      <h2 id="h-private">Private by design.</h2>
+      <h2 id="h-private">Stays on your Mac.</h2>
       <p class="intro">Plasmie reads your work. So all of its thinking happens on your Mac.</p>
       <dl class="facts">
         <div><dt>On-device intelligence.</dt><dd>Summaries, filing and answers all run on Apple’s on-device model. Never Private Cloud Compute. Never another AI service.</dd></div>
-        <div><dt>Zero tracking.</dt><dd>No analytics, no telemetry, no crash reports. Every prompt sent to the model is logged on your Mac, so you can check.</dd></div>
+        <div><dt>No tracking.</dt><dd>No analytics, no telemetry, no crash reports. Every prompt sent to the model is logged on your Mac, so you can check.</dd></div>
         <div><dt>Off until you say so.</dt><dd>Network connectors start switched off. Each one you turn on reads only your own account, on its own service.</dd></div>
-        <div><dt>One download. Once.</dt><dd>The search engine and its models, about 4&nbsp;GB, at setup. After that, only your connectors use the network.</dd></div>
-        <div><dt>Sign-ins, in Keychain.</dt><dd>Tokens live in your Mac’s login Keychain. Never in a plain file.</dd></div>
+        <div><dt>One download, at setup.</dt><dd>The search engine and its models, about 4&nbsp;GB. After that, only your connectors use the network, and iCloud, if you turn it on.</dd></div>
+        <div><dt>Sign-ins stay in Keychain.</dt><dd>Tokens live in your Mac’s login Keychain, never in a plain file. Reset Plasmie removes them.</dd></div>
         <div><dt>iCloud, if you want it.</dt><dd>Off by default. Turn it on to read filed notes and daily digests on iPhone or iPad. Raw captures stay on your Mac.</dd></div>
       </dl>
     </div>
@@ -196,14 +201,14 @@
         <p>Your notes are ordinary files in <code>~/knowledge</code>, or any folder you pick. Read and edit them right in Plasmie, or open the same folder in Obsidian.</p>
         <p>Already keep notes? Point Plasmie at them. It adds what it needs alongside, and never moves or rewrites yours on its own.</p>
         <p>Map shows your notes as a graph and suggests links between related ones. They’re written into your notes only if you ask.</p>
-        <p>And if you ever remove Plasmie, <b>Reset Plasmie</b> clears its jobs, settings and sign-ins. Your notes stay exactly where they are.</p>
+        <p>If you ever remove Plasmie, <b>Reset Plasmie</b> deletes its background jobs, settings, logs and the sign-ins it saved in your Keychain. It saves a restore point of your notes first and never deletes them.</p>
       </div>
     </div>
   </section>
 
   <section class="install" id="install" aria-labelledby="h-install">
     <div class="wrap">
-      <h2 id="h-install">Get started.</h2>
+      <h2 id="h-install">Install Plasmie.</h2>
       <div class="install-grid">
         <div>
           <h3>What you need</h3>
@@ -221,7 +226,7 @@
             <!-- INSTALL-PROMPT: the two steps below cover macOS's first-launch block
                  for an app that isn't from the App Store. Edit or remove them when
                  the install no longer needs Open Anyway. -->
-            <li><p>Open Plasmie from Applications. When your Mac warns you, click <b>Done</b>.</p></li>
+            <li><p>Open Plasmie from Applications. When your Mac warns you, click <b>Done</b>. (It warns because Plasmie isn’t from the App Store.)</p></li>
             <li><div>
               <p>Go to <b>System Settings › Privacy &amp; Security</b>. Click <b>Open Anyway</b> and enter your password. You only do this once.</p>
               <!-- Shortcut for Mac visitors only; the text above stays the instruction. -->
@@ -247,9 +252,8 @@
 <footer>
   <div class="wrap">
     <span>Plasmie 0.11.0 for macOS</span>
-    <!-- TODO(github): the repo isn't public yet. When it is, turn this span into
-         <a href="https://github.com/OWNER/REPO"> and drop the "Coming soon" tag. -->
-    <span class="soon" aria-disabled="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub <small>Coming soon</small></span>
+    <!-- TODO(github): the repo isn't public yet. When it is, add
+         <a href="https://github.com/OWNER/REPO">GitHub</a> here and in the header nav. -->
     <a href="#main">Back to top</a>
   </div>
 </footer>
