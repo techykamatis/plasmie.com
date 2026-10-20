@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found · Plasmie</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FDF1F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E1218" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .lost { min-height: calc(100vh - 56px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: var(--space-xl); padding-block: var(--space-xl); }
+  .lost h1 { font-size: clamp(3rem, 8vw, 5.5rem); line-height: .95; }
+  .lost p { margin-top: var(--space-md); color: var(--ink-2); max-width: 34ch; }
+  .lost .button { margin-top: var(--space-xl); }
+  .lost .mini { width: min(100%, 340px); aspect-ratio: 1; justify-self: center; }
+  .lost .mini svg { width: 100%; height: 100%; overflow: visible; display: block; }
+  @media (max-width: 760px) { .lost { grid-template-columns: minmax(0, 1fr); min-height: auto; align-content: start; } .lost .mini { width: 200px; order: -1; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="notch" aria-hidden="true"><span class="ear" data-plasmie="error"></span></div></header>
+<main class="wrap lost">
+  <div>
+    <h1>Nothing here</h1>
+    <p>This page doesn’t exist. It may have moved, or the link has a typo.</p>
+    <a class="button" href="/">Go to the home page</a>
+  </div>
+  <span class="mini" data-plasmie="error" role="img" aria-label="Plasmie melted into a worried puddle"></span>
+</main>
+<script src="/assets/plasmie-shapes.js" defer></script>
+<script src="/assets/plasmie.js" defer></script>
+</body>
+</html>
