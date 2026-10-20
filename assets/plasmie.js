@@ -191,6 +191,12 @@
     host.__blob = B; blobs.push(B);
   });
 
+  /* the last section and the footer share the final screen: tell CSS how tall the footer is */
+  var foot = document.getElementById("site-foot");
+  function footH() { if (foot) document.documentElement.style.setProperty("--foot-h", foot.offsetHeight + "px"); }
+  footH(); window.addEventListener("resize", footH);
+  if (foot && "ResizeObserver" in window) new ResizeObserver(footH).observe(foot);   // fonts arriving late
+
   /* let other scripts (the Ask demo) change a blob's shape */
   window.Plasmie = { morph: function (host, state) { if (host && host.__blob) morph(host.__blob, state); } };
 

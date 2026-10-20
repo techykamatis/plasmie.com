@@ -152,8 +152,6 @@ section h2 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); letter-spacing: -.01em; ma
 .steps b { color: var(--ink); font-weight: 600; }
 .install .get { margin-top: var(--space-xl); }
 
-footer { border-top: 1px solid var(--rule); padding-block: var(--space-lg) var(--space-xl); font-size: .95rem; color: var(--ink-3); }
-footer .wrap { align-items: center; display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-md); }
 
 /* ---------- smaller screens ---------- */
 @media (max-width: 900px) {
@@ -244,7 +242,7 @@ section {
   padding-block: clamp(40px, 6vh, 80px);
 }
 section > .wrap { width: 100%; }
-footer { scroll-snap-align: end; }
+
 /* sections taller than a phone screen still scroll through; trim them so most fit */
 @media (max-width: 520px) {
   section h2 { font-size: 1.9rem; }
@@ -438,4 +436,46 @@ footer { scroll-snap-align: end; }
   .steps li::before { width: 2rem; height: 2rem; font-size: 1.1rem; }
   .settings-link { margin-top: 6px; padding: 6px 12px; font-size: .85rem; }
   .install .get { margin-top: var(--space-md); }
+}
+
+/* ---------- footer: the page's sign-off ---------- */
+/* The last section shrinks by the footer's height (set by plasmie.js), so "Install Plasmie."
+   and the footer share one screen and the page ends on that stop, with no extra one. */
+#install { min-height: calc(100svh - var(--foot-h, 0px)); }
+.site-foot {
+  background: color-mix(in oklab, var(--ground), var(--ink) 5%);
+  padding-block: clamp(32px, 5vh, 56px) var(--space-lg); color: var(--ink-2); scroll-snap-align: end;
+}
+.foot-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-lg) var(--space-xl); align-items: start; }
+.foot-brand { display: grid; gap: 6px; }
+.foot-mark { display: flex; align-items: center; gap: 10px; font: 800 1.6rem/1 var(--display); color: var(--ink); }
+.foot-mark img { display: block; width: 34px; height: auto; }
+.foot-line { font-size: 1rem; color: var(--ink-2); }
+.foot-version { font-size: .9rem; color: var(--ink-3); }
+.foot-links ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; justify-items: end; }
+.foot-links a { display: inline-flex; align-items: center; min-height: 32px; color: var(--ink); text-decoration: none; font-weight: 500; }
+.foot-links a:hover { text-decoration: underline; text-decoration-color: var(--ink-3); }
+.foot-legal {
+  grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px var(--space-lg);
+  padding-top: var(--space-md); border-top: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  font-size: .82rem; color: var(--ink-3);
+}
+.foot-legal p { max-width: 70ch; }
+.foot-top { color: var(--ink-3); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--ink-3) 50%, transparent); text-underline-offset: 3px; white-space: nowrap; }
+.foot-top:hover { color: var(--ink); }
+@media (max-width: 760px) {
+  .foot-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
+  .foot-links ul { justify-items: start; gap: 0; }
+  .foot-links a { min-height: 44px; }                      /* comfortable tap targets */
+  .foot-top { display: inline-flex; align-items: center; min-height: 44px; }
+}
+/* install shares its screen with the footer: tighter spacing so both fit */
+#install { padding-block: clamp(24px, 4vh, 48px) clamp(16px, 2.5vh, 32px); }
+#install .install-grid { margin-top: var(--space-lg); }
+#install .get { margin-top: var(--space-lg); }
+.site-foot { padding-block: clamp(24px, 3.5vh, 40px) 16px; }
+.foot-grid { row-gap: var(--space-md); }
+@media (max-width: 760px) {
+  .foot-links ul { grid-template-columns: repeat(3, max-content); column-gap: var(--space-lg); }
+  .foot-links li:last-child { grid-column: 1 / -1; }
 }
