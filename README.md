@@ -35,7 +35,7 @@ Then open http://localhost:8000. Use a server rather than opening the file direc
 
 ## Before going live
 
-- **Download link.** Both "Download for Mac" buttons in `index.html` point to the placeholder `/download/Plasmie.dmg`. Search for `TODO(download)` and replace both with the real DMG URL (for example a GitHub release asset: `https://github.com/OWNER/REPO/releases/latest/download/Plasmie.dmg`).
+- **Download link.** Both "Download for Mac" buttons link to the latest release's `Plasmie-<version>.dmg` on GitHub (`data-plasmie-download`). `/release` in the Plasmie repo rewrites them, with the version number, after each release.
 - **Install steps.** The "Open Anyway" steps sit between `INSTALL-PROMPT` comments in `index.html`. Edit or remove them when the install no longer needs that step.
 - **GitHub.** There is no GitHub link for now. Search for `TODO(github)` in `index.html` (header nav and footer) and add one when the repo is public.
 - **Privacy & Security shortcut.** Install step 3 has an "Open Privacy & Security" button (`x-apple.systempreferences:` link), shown only on Macs. It sits inside the `INSTALL-PROMPT` markers, so it goes when those steps go.
