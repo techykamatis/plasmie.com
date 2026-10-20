@@ -13,7 +13,7 @@
   --gutter: clamp(16px, 4vw, 40px);
   --space-xs: 4px; --space-sm: 8px; --space-md: 16px; --space-lg: 24px; --space-xl: 48px; --space-2xl: 96px;
   --glide: cubic-bezier(.16, 1, .3, 1);
-  --mac-edge: transparent;
+  --mac-edge: transparent; --mac-glow: 0 0 #0000;
   color-scheme: light;
 }
 /* Theme: auto follows the system; data-theme="light"|"dark" on <html> overrides it. */
@@ -24,7 +24,7 @@
     --band: #2C1823; --band-ink: #FBE9EF; --band-ink-2: #E7C3D0; --band-rule: #4E2D40;
     --mac-screen: var(--ground); --mac-bar: color-mix(in oklab, var(--ground), var(--ink) 8%); --mac-alu: #6B5A63; --mac-alu-2: #54454D;
     --body: #F7A8BE; --body-hi: #FCD3DE; --off: #8E7F86; --card: #FBE9EF; --zzz: #C095A8;
-    --mac-edge: var(--rule);
+    --mac-edge: #7A4A66; --mac-glow: 0 0 56px -4px color-mix(in oklab, var(--body) 34%, transparent);
     color-scheme: dark;
   }
 }
@@ -34,7 +34,7 @@
   --band: #2C1823; --band-ink: #FBE9EF; --band-ink-2: #E7C3D0; --band-rule: #4E2D40;
   --mac-screen: var(--ground); --mac-bar: color-mix(in oklab, var(--ground), var(--ink) 8%); --mac-alu: #6B5A63; --mac-alu-2: #54454D;
   --body: #F7A8BE; --body-hi: #FCD3DE; --off: #8E7F86; --card: #FBE9EF; --zzz: #C095A8;
-  --mac-edge: var(--rule);
+  --mac-edge: #7A4A66; --mac-glow: 0 0 56px -4px color-mix(in oklab, var(--body) 34%, transparent);
   color-scheme: dark;
 }
 
@@ -216,7 +216,8 @@ footer .wrap { align-items: center; display: flex; flex-wrap: wrap; justify-cont
   transform-origin: 50% 100%; transform: rotateX(-90deg);
 }
 .lid-front, .lid-back { position: absolute; inset: 0; border-radius: 14px 14px 4px 4px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.lid-front { background: var(--bezel); padding: 2.2% 2.2% 2.8%; box-shadow: 0 0 0 1px var(--mac-edge); }
+/* dark mode: a lighter rim and a soft pink glow keep the black bezel visible */
+.lid-front { background: var(--bezel); padding: 2.2% 2.2% 2.8%; box-shadow: 0 0 0 1px var(--mac-edge), var(--mac-glow); }
 .lid-back { background: var(--mac-alu); transform: rotateY(180deg); box-shadow: inset 0 0 0 1px var(--mac-alu-2); }
 .screen { position: relative; height: 100%; background: var(--mac-screen); border-radius: 6px 6px 2px 2px; }
 .menubar { height: 5%; background: var(--mac-bar); border-radius: 6px 6px 0 0; }
@@ -233,6 +234,7 @@ footer .wrap { align-items: center; display: flex; flex-wrap: wrap; justify-cont
 .island {
   position: absolute; left: 50%; top: 0; width: 0; height: 0; visibility: hidden;
   transform: translateX(-50%); background: var(--bezel); overflow: hidden;
+  box-shadow: var(--mac-glow);
 }
 /* laid out at the island's full size; the growing island reveals it */
 .island-inner { position: absolute; left: 50%; top: 0; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; padding: 0 22px; }
