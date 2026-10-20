@@ -394,7 +394,7 @@ footer { scroll-snap-align: end; }
 .tl-time { font: 800 clamp(1.5rem, 2.3vw, 2rem)/1.1 var(--display); color: var(--ink); margin-top: var(--space-md); }
 .timeline p { margin-top: var(--space-sm); color: var(--ink-2); max-width: 34ch; }
 .timeline a { color: var(--ink); font-weight: 600; }
-.tl-note { margin-top: var(--space-xl); font-size: .92rem; color: var(--ink-3); max-width: 60ch; }
+.tl-note { margin-top: var(--space-lg); font-size: .92rem; color: var(--ink-3); white-space: nowrap; }
 /* phones and narrow windows: the axis runs down the left */
 @media (max-width: 900px) {
   .timeline { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); margin-top: var(--space-lg); }
