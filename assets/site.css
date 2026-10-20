@@ -384,6 +384,11 @@ footer { scroll-snap-align: end; }
 .settings-link[hidden] { display: none; }
 
 /* ---------- a day: time axis with Plasmie's shape at each stop ---------- */
+/* heading left, subhead right on wide screens, so the header doesn't leave half the row empty */
+.sec-head { display: grid; grid-template-columns: auto minmax(0, 50ch); justify-content: start; align-items: last baseline; gap: var(--space-md) clamp(32px, 4vw, 56px); }
+.sec-head h2 { max-width: none; }
+.sec-head .intro { margin-top: 0; }
+@media (max-width: 900px) { .sec-head { display: block; } .sec-head .intro { margin-top: var(--space-sm); } }
 .timeline { list-style: none; margin: var(--space-xl) 0 0; padding: 0; position: relative;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 clamp(20px, 3vw, 40px); }
 .timeline::before { content: ""; position: absolute; left: 0; right: 0; top: calc(96px + 9px); height: 2px; background: var(--rule-strong); }
