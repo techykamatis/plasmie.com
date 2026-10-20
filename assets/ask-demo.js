@@ -5,7 +5,7 @@
   var demo = document.getElementById("ask-demo");
   if (!demo) return;
   var blob = document.getElementById("ask-blob"), q = document.getElementById("ask-q"), ph = document.getElementById("ask-ph");
-  var status = document.getElementById("ask-status"), ans = document.getElementById("ask-a"), src = document.getElementById("ask-src");
+  var srcHead = document.getElementById("ask-src-head"), status = document.getElementById("ask-status"), ans = document.getElementById("ask-a"), src = document.getElementById("ask-src");
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var QUESTION = "What did we decide about the release checklist?";
@@ -15,19 +15,21 @@
      with the type labels and dot colours of Plasmie's map filters. */
   var SOURCES = [
     ["Release checklist", "note"],
-    ["Daily digest, Tue 14 Oct", "digest"],
+    ["Tue 14 Oct", "digest"],
     ["Ship on Thursday", "decision"]
   ];
 
   function morph(state) { if (window.Plasmie) window.Plasmie.morph(blob, state); }
   function reset() {
-    q.textContent = ""; ans.textContent = ""; src.replaceChildren();
+    q.textContent = ""; ans.textContent = ""; src.replaceChildren(); srcHead.hidden = true;
     ph.hidden = false; status.textContent = "⌃⌥⌘K"; demo.classList.remove("answered", "typing");
     morph("idle");
   }
   function addSource(s) {
+    srcHead.hidden = false;
     var li = document.createElement("li");
-    li.innerHTML = '<span class="src-kind" data-type="' + s[1] + '"><i aria-hidden="true"></i>' + s[1] + "</span>" + s[0];
+    li.dataset.type = s[1];
+    li.innerHTML = '<i class="src-dot" aria-hidden="true"></i><span class="src-tag">' + s[1] + '</span><span class="src-title">' + s[0] + "</span>";
     src.appendChild(li);
   }
   function finished() {
