@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Plasmie, a private work memory for your Mac</title>
-<meta name="description" content="Plasmie lives beside your MacBook's notch. It keeps notes on your work day and answers questions about them with Apple's on-device model. Everything runs on your Mac.">
+<meta name="description" content="Plasmie remembers your work, right on your Mac. It lives beside the notch, keeps notes on your work day, and answers when you ask, with Apple Intelligence on device.">
 <link rel="canonical" href="https://plasmie.com/">
 <meta name="theme-color" content="#FDF1F4" media="(prefers-color-scheme: light)" data-color="#FDF1F4" data-media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1E1218" media="(prefers-color-scheme: dark)" data-color="#1E1218" data-media="(prefers-color-scheme: dark)">
+<script>if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("scrub");</script>
 <script>try { var t = localStorage.getItem("plasmie-theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://plasmie.com/">
@@ -34,7 +35,6 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
-  <div class="notch" aria-hidden="true"><span class="ear" id="notch-blob" data-plasmie="idle"></span></div>
   <nav aria-label="Sections">
     <div class="links">
       <a href="#day">How it works</a>
@@ -52,10 +52,14 @@
 </header>
 
 <main id="main">
+  <!-- The hero pins while you scroll through this track; scrolling plays the opening. -->
+  <div class="hero-track" id="hero-track">
+  <div class="hero-pin">
   <div class="wrap hero">
     <div>
       <h1>Plasmie</h1>
-      <p class="lede">A small pink blob that lives beside your MacBook’s notch. It keeps notes on your work day and answers questions about them. Everything runs on your Mac.</p>
+      <p class="tagline">Remembers your work. Right on your Mac.</p>
+      <p class="lede">A little pink blob that lives beside the notch. It keeps notes on your work day, files what matters, and answers when you ask. Powered by Apple Intelligence, on device.</p>
       <div class="get">
         <!-- TODO(download): replace with the real DMG URL, e.g. a GitHub release asset
              https://github.com/OWNER/REPO/releases/latest/download/Plasmie.dmg -->
@@ -63,13 +67,35 @@
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16.5h12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Download for Mac
         </a>
-        <p class="fine">Version 0.11.0. Needs an Apple silicon Mac on macOS&nbsp;26 or later, with Apple Intelligence turned on.</p>
+        <p class="fine">Version 0.11.0. Requires a Mac with Apple silicon and macOS&nbsp;26 or later, with Apple Intelligence turned on.</p>
       </div>
     </div>
 
     <div class="stage">
-      <button class="blob" type="button" id="hero-blob" data-plasmie="idle" aria-label="Plasmie. Click to see its next shape."></button>
-      <div class="caption-row">
+      <div class="frame" id="hero-frame">
+        <button class="blob" type="button" id="hero-blob" data-plasmie="idle" aria-label="Plasmie. Click to see its next shape."></button>
+        <!-- Opening, driven by scrolling: a MacBook opens, the view zooms into the notch,
+             the notch opens to show Plasmie, and Plasmie pops out. assets/plasmie.js
+             plays it; with reduced motion it is skipped. -->
+        <div class="opening" id="hero-intro" aria-hidden="true">
+          <div class="scene" id="intro-scene">
+            <div class="mac">
+              <div class="deck"><div class="keys"></div><div class="pad"></div><div class="deck-edge"></div></div>
+              <div class="lid">
+                <div class="lid-front"><div class="screen"><div class="menubar"></div><div class="notch-cut" id="intro-notch"></div></div></div>
+                <div class="lid-back"></div>
+              </div>
+            </div>
+          </div>
+          <div class="island" id="intro-island">
+            <div class="island-inner">
+              <span class="ear" data-plasmie="idle"></span>
+              <div class="island-ui"><b>Plasmie</b><span class="chips"><i>Ask</i><i>Ingest</i><i>Map</i><i>More</i></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption-row" id="hero-caption-row">
         <p id="hero-caption"><b>Resting.</b> Everything is up to date.</p>
         <button class="pause" id="hero-pause" type="button" aria-pressed="false">Pause</button>
       </div>
@@ -85,31 +111,34 @@
       </ul>
     </div>
   </div>
+  </div>
+  <span class="hero-end" aria-hidden="true"></span>
+  </div>
 
   <section id="day" aria-labelledby="h-day">
     <div class="wrap">
-      <h2 id="h-day">What it does with your day</h2>
-      <p class="intro">Plasmie works in the background on a schedule. You don’t have to open it for any of this.</p>
+      <h2 id="h-day">Works while you work.</h2>
+      <p class="intro">Plasmie runs on a schedule in the background. Nothing to open, nothing to remember.</p>
       <ol class="day">
         <li>
           <span class="mini" data-plasmie="ingest" role="img" aria-label="Plasmie shaped like a bowl, catching coloured dots"></span>
           <div><h3>Gathers</h3><span class="when">Every hour</span></div>
-          <p>Reads new activity from the sources you switch on: Slack, GitHub, Confluence, Outlook mail and calendar, commits in your local git repos, and Claude Code sessions. Passwords, keys and tokens are stripped out before anything is saved.</p>
+          <p>Slack, GitHub, Confluence, Outlook mail and calendar, local git commits and Claude Code sessions. Turn on the ones you use. Passwords, keys and tokens are scrubbed before anything is saved.</p>
         </li>
         <li>
           <span class="mini" data-plasmie="summarize" role="img" aria-label="Plasmie squashed into a dumpling shape"></span>
           <div><h3>Summarises</h3><span class="when">Every hour</span></div>
-          <p>Writes a short digest of what happened, using Apple’s on-device model.</p>
+          <p>A short digest of your day so far, written by Apple’s on-device model.</p>
         </li>
         <li>
           <span class="mini" data-plasmie="promote" role="img" aria-label="Plasmie shaped like a box, with a note card dropping in"></span>
-          <div><h3>Files</h3><span class="when">Overnight, around 2:30&nbsp;am</span></div>
-          <p>Turns what’s worth keeping into tagged notes. If it isn’t confident about something, it holds it back for you to approve instead of filing a guess.</p>
+          <div><h3>Files</h3><span class="when">Every night, around 2:30&nbsp;am</span></div>
+          <p>What’s worth keeping becomes tagged notes. Anything it isn’t sure about waits for your OK.</p>
         </li>
         <li>
           <span class="mini" data-plasmie="ask" role="img" aria-label="Plasmie shaped like a lightbulb, with a spark"></span>
-          <div><h3>Answers</h3><span class="when">When you press <kbd>⌃⌥⌘K</kbd></span></div>
-          <p>Ask about your work from any app. The answer comes only from your notes, and lists the notes it used so you can open them.</p>
+          <div><h3>Answers</h3><span class="when">Anytime, with <kbd>⌃⌥⌘K</kbd></span></div>
+          <p>Ask a question from any app. Answers come only from your notes, with the sources right there to open.</p>
         </li>
       </ol>
     </div>
@@ -117,30 +146,29 @@
 
   <section aria-labelledby="h-shapes">
     <div class="wrap">
-      <h2 id="h-shapes">The shape is the status</h2>
-      <p class="intro">Plasmie shows its status by changing shape, so one look at the notch tells you whether things are working.</p>
+      <h2 id="h-shapes">Its shape is its status.</h2>
+      <p class="intro">Plasmie changes shape to show what it’s doing. Glance at the notch and you know.</p>
       <ul class="shapes">
-        <li><span class="mini" data-plasmie="held" role="img" aria-label="Plasmie raising a hand, with an exclamation mark"></span><b>Hand up</b><p>Some notes are waiting for your OK.</p></li>
-        <li><span class="mini" data-plasmie="error" role="img" aria-label="Plasmie melted into a puddle, looking worried"></span><b>Puddle</b><p>A connector stopped working.</p></li>
-        <li><span class="mini" data-plasmie="busy" role="img" aria-label="Plasmie shaped like an hourglass"></span><b>Hourglass</b><p>Your Mac is hot or busy, so background jobs wait.</p></li>
-        <li><span class="mini" data-plasmie="quiet" role="img" aria-label="Plasmie flattened and asleep"></span><b>Flat and asleep</b><p>Nothing new has come in for a while.</p></li>
-        <li><span class="mini" data-plasmie="off" role="img" aria-label="Plasmie as a small grey ball"></span><b>Grey ball</b><p>Every connector is switched off.</p></li>
+        <li><span class="mini" data-plasmie="held" role="img" aria-label="Plasmie raising a hand, with an exclamation mark"></span><b>Hand up</b><p>Notes are waiting for your OK.</p></li>
+        <li><span class="mini" data-plasmie="error" role="img" aria-label="Plasmie melted into a puddle, looking worried"></span><b>Puddle</b><p>A connector needs attention.</p></li>
+        <li><span class="mini" data-plasmie="busy" role="img" aria-label="Plasmie shaped like an hourglass"></span><b>Hourglass</b><p>Your Mac is busy. Jobs will wait.</p></li>
+        <li><span class="mini" data-plasmie="quiet" role="img" aria-label="Plasmie flattened and asleep"></span><b>Flat and asleep</b><p>Nothing new for a while.</p></li>
+        <li><span class="mini" data-plasmie="off" role="img" aria-label="Plasmie as a small grey ball"></span><b>Grey ball</b><p>All connectors are off.</p></li>
       </ul>
     </div>
   </section>
 
   <section class="private" id="private" aria-labelledby="h-private">
     <div class="wrap">
-      <h2 id="h-private">Your notes stay on your Mac</h2>
-      <p class="intro">Plasmie reads your work, so here is what it sends and where.</p>
+      <h2 id="h-private">Private by design.</h2>
+      <p class="intro">Plasmie reads your work. So all of its thinking happens on your Mac.</p>
       <dl class="facts">
-        <div><dt>The AI runs on your Mac</dt><dd>Summaries, filing and answers all use Apple’s on-device model. Apple’s Private Cloud Compute is never used, and no other AI service is called.</dd></div>
-        <div><dt>No tracking</dt><dd>No analytics, no telemetry, no crash reports. Nothing is sent automatically.</dd></div>
-        <div><dt>You pick the sources</dt><dd>Connectors that use the network start off. Each one you switch on talks only to its own service, to read your own account. One that’s off makes no network calls.</dd></div>
-        <div><dt>One download at setup</dt><dd>The search engine and its models, about 4&nbsp;GB, downloaded once. After that, the only network use is the connectors you switch on, and iCloud if you turn it on.</dd></div>
-        <div><dt>Sign-ins live in Keychain</dt><dd>Tokens and passwords go in your Mac’s login Keychain, never in a plain file.</dd></div>
-        <div><dt>You can check it</dt><dd>Every prompt sent to the model is logged on your Mac, so you can see exactly what it read.</dd></div>
-        <div><dt>iCloud is optional</dt><dd>Off unless you turn it on. Then your filed notes and daily digests are copied to iCloud Drive to read on an iPhone or iPad. Raw captures, like your Slack messages, are never copied.</dd></div>
+        <div><dt>On-device intelligence.</dt><dd>Summaries, filing and answers all run on Apple’s on-device model. Never Private Cloud Compute. Never another AI service.</dd></div>
+        <div><dt>Zero tracking.</dt><dd>No analytics, no telemetry, no crash reports. Every prompt sent to the model is logged on your Mac, so you can check.</dd></div>
+        <div><dt>Off until you say so.</dt><dd>Network connectors start switched off. Each one you turn on reads only your own account, on its own service.</dd></div>
+        <div><dt>One download. Once.</dt><dd>The search engine and its models, about 4&nbsp;GB, at setup. After that, only your connectors use the network.</dd></div>
+        <div><dt>Sign-ins, in Keychain.</dt><dd>Tokens live in your Mac’s login Keychain. Never in a plain file.</dd></div>
+        <div><dt>iCloud, if you want it.</dt><dd>Off by default. Turn it on to read filed notes and daily digests on iPhone or iPad. Raw captures stay on your Mac.</dd></div>
       </dl>
     </div>
   </section>
@@ -148,23 +176,23 @@
   <section aria-labelledby="h-notes">
     <div class="wrap notes">
       <div>
-        <h2 id="h-notes">Your notes are plain Markdown files</h2>
+        <h2 id="h-notes">Plain Markdown. In a folder you choose.</h2>
       </div>
       <div class="col">
-        <p>They live in a folder you pick, <code>~/knowledge</code> unless you choose another. Read and edit them in Plasmie, or open the same folder in Obsidian if you use it.</p>
-        <p>Point it at notes you already have and Plasmie adds what it needs next to them. It searches your own notes but never moves or rewrites them on its own.</p>
-        <p>The map draws your notes as a graph and suggests links between related ones. Suggestions stay out of your files unless you ask Plasmie to add them.</p>
-        <p>To remove Plasmie, <b>Reset Plasmie</b> clears its background jobs, settings and sign-ins. Your notes folder is never touched.</p>
+        <p>Your notes are ordinary files in <code>~/knowledge</code>, or any folder you pick. Read and edit them right in Plasmie, or open the same folder in Obsidian.</p>
+        <p>Already keep notes? Point Plasmie at them. It adds what it needs alongside, and never moves or rewrites yours on its own.</p>
+        <p>Map shows your notes as a graph and suggests links between related ones. They’re written into your notes only if you ask.</p>
+        <p>And if you ever remove Plasmie, <b>Reset Plasmie</b> clears its jobs, settings and sign-ins. Your notes stay exactly where they are.</p>
       </div>
     </div>
   </section>
 
   <section class="install" id="install" aria-labelledby="h-install">
     <div class="wrap">
-      <h2 id="h-install">Install</h2>
+      <h2 id="h-install">Get started.</h2>
       <div class="install-grid">
         <div>
-          <h3>You need</h3>
+          <h3>What you need</h3>
           <ul class="needs">
             <li>A Mac with Apple silicon (M1 or newer)</li>
             <li>macOS 26 or later</li>
@@ -173,7 +201,7 @@
           </ul>
         </div>
         <div>
-          <h3>Steps</h3>
+          <h3>How to install</h3>
           <ol class="steps">
             <li><p>Open <b>Plasmie.dmg</b> and drag Plasmie onto Applications.</p></li>
             <!-- INSTALL-PROMPT: the two steps below cover macOS's first-launch block

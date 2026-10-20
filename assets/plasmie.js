@@ -184,18 +184,16 @@
     host.__blob = B; blobs.push(B);
   });
 
-  /* the hero blob and the one in the notch cycle together through a day */
-  var hero = document.getElementById("hero-blob"), notch = document.getElementById("notch-blob");
+  /* the hero blob cycles through a day of states */
+  var hero = document.getElementById("hero-blob");
   var caption = document.getElementById("hero-caption"), pause = document.getElementById("hero-pause");
   var CYCLE = [];
   document.querySelectorAll("#hero-states li").forEach(function (li) { CYCLE.push([li.getAttribute("data-state"), li.innerHTML]); });
-  var idx = 0, running = !reduce && CYCLE.length > 0, last = 0;
+  var idx = 0, running = false, wantRun = !reduce && CYCLE.length > 0, last = 0;
 
   function show(i) {
     idx = i;
-    var st = CYCLE[i][0];
-    if (hero) morph(hero.__blob, st);
-    if (notch) morph(notch.__blob, st);
+    if (hero) morph(hero.__blob, CYCLE[i][0]);
     if (caption) caption.innerHTML = CYCLE[i][1];
   }
   if (CYCLE.length) show(0);
@@ -203,13 +201,114 @@
   if (pause) {
     if (reduce) pause.hidden = true;
     pause.addEventListener("click", function () {
-      running = !running;
-      pause.textContent = running ? "Pause" : "Play";
-      pause.setAttribute("aria-pressed", running ? "false" : "true");
+      wantRun = !wantRun; running = wantRun;
+      pause.textContent = wantRun ? "Pause" : "Play";
+      pause.setAttribute("aria-pressed", wantRun ? "false" : "true");
       last = performance.now();
     });
   }
-  if (hero) hero.addEventListener("click", function () { show((idx + 1) % CYCLE.length); last = performance.now(); });
+  if (hero) hero.addEventListener("click", function () { if (!done && document.documentElement.classList.contains("scrub")) return; show((idx + 1) % CYCLE.length); last = performance.now(); });
+
+  /* The opening, scrubbed by scrolling through #hero-track. One continuous move, no fades:
+     0.00-0.26  the lid opens from shut while the camera drops to eye level (the deck flattens)
+     0.27-0.50  the view zooms into the notch; the screen is the page colour, so the Mac
+                dissolves into the page
+     0.51-0.67  the notch itself grows into the island, revealing Plasmie inside
+     0.68-0.93  Plasmie pops up out of the island and grows to full size, while the
+                island and the Mac sink down out of view
+     0.94+      the status cycle runs */
+  var track = document.getElementById("hero-track"), frameEl = document.getElementById("hero-frame");
+  var scene = document.getElementById("intro-scene"), island = document.getElementById("intro-island");
+  var notchEl = document.getElementById("intro-notch"), lid = frameEl && frameEl.querySelector(".lid");
+  var mac = frameEl && frameEl.querySelector(".mac");
+  var inner = island && island.querySelector(".island-inner"), ear = island && island.querySelector(".ear");
+  var geo = null, done = false;
+
+  function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function seg(p, a, b) { return clamp01((p - a) / (b - a)); }
+  function inOut(k) { return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; }
+  function outBack(k) { var c = 1.4; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); }
+  function fit(w, h) { return Math.min(w / 112, h / 120); }       // the blob's viewBox is 112 x 120
+
+  function measure() {
+    var keep = [lid.style.transform, scene.style.transform, mac.style.perspectiveOrigin];
+    lid.style.transform = "none"; scene.style.transform = "none";
+    var f = frameEl.getBoundingClientRect(), n = notchEl.getBoundingClientRect(), m = mac.getBoundingClientRect();
+    lid.style.transform = keep[0]; scene.style.transform = keep[1]; mac.style.perspectiveOrigin = keep[2];
+    var S = (f.width * 0.26) / n.width;                             // notch to a quarter of the frame
+    var g = { f: f, S: S, cx: n.left - f.left + n.width / 2, cy: n.top - f.top + n.height / 2,
+      tx: f.width / 2, ty: f.height * 0.3, nw: n.width, nh: n.height, macH: m.height };
+    g.w0 = g.nw * S; g.h0 = g.nh * S; g.w1 = Math.min(Math.max(f.width * 0.94, 320), window.innerWidth - 24); g.h1 = g.w1 * 0.38;
+    g.r0 = Math.min(g.h0 / 2, 6 * S); g.top = g.ty - g.h0 / 2;
+    g.drop = window.innerHeight - (f.top + g.top) + 80;              // far enough to sink out of view
+    inner.style.width = g.w1 + "px"; inner.style.height = g.h1 + "px";
+    // where the island's blob sits once the island is fully open (inner is static, so measure it)
+    var e = ear.getBoundingClientRect(), es = ear.style.transform;
+    ear.style.transform = "none"; island.style.width = g.w1 + "px"; island.style.height = g.h1 + "px";
+    island.style.top = g.top + "px"; island.style.transform = "translateX(-50%)";
+    e = ear.getBoundingClientRect(); ear.style.transform = es;
+    g.ex = e.left - f.left + e.width / 2; g.ey = e.top - f.top + e.height / 2;
+    g.er = fit(e.width, e.height) / fit(f.width, f.height);
+    geo = g;
+  }
+
+  function render(p) {
+    if (!geo) measure();
+    var g = geo;
+    // 1. lid opens, camera drops from above to the hinge
+    var o = inOut(seg(p, 0, 0.26));
+    lid.style.transform = "rotateX(" + (-90 + 90 * o) + "deg)";
+    mac.style.perspectiveOrigin = "50% " + (-70 + 170 * o) + "%";
+    // 2. zoom into the notch; 4. keep going up and out
+    var z = inOut(seg(p, 0.27, 0.50)), S = Math.pow(g.S, z);
+    var px = g.cx + (g.tx - g.cx) * z, py = g.cy + (g.ty - g.cy) * z;
+    var out = inOut(seg(p, 0.68, 0.93)), lift = g.drop * out;
+    scene.style.transform = "translate(" + (px - g.cx * S) + "px," + (py - g.cy * S + lift) + "px) scale(" + S + ")";
+    // 3. the notch grows into the island
+    var k = outBack(seg(p, 0.51, 0.67)), kl = seg(p, 0.51, 0.67);
+    island.style.visibility = p >= 0.5 ? "visible" : "hidden";
+    island.style.top = g.top + "px";
+    island.style.width = (g.w0 + (g.w1 - g.w0) * k) + "px";
+    island.style.height = (g.h0 + (g.h1 - g.h0) * k) + "px";
+    var r = g.r0 + (34 - g.r0) * kl;
+    island.style.borderRadius = "0 0 " + r + "px " + r + "px";
+    island.style.transform = "translateX(-50%) translateY(" + lift + "px)";
+    ear.style.transform = "scale(" + Math.max(0, outBack(seg(p, 0.55, 0.67))) + ")";
+    // 4. the same blob leaves the island and grows into the hero
+    var flying = p >= 0.68;
+    ear.style.visibility = flying ? "hidden" : "visible";
+    if (hero) {
+      var q = outBack(seg(p, 0.68, 0.93));
+      var sc = g.er + (1 - g.er) * q;
+      var dx = (g.ex - g.f.width / 2) * (1 - q), dy = (g.ey - g.f.height / 2) * (1 - q);
+      hero.style.opacity = flying ? "1" : "0";
+      hero.style.transform = "translate(" + dx + "px," + dy + "px) scale(" + sc + ")";
+    }
+    var finished = p >= 0.94;
+    frameEl.classList.toggle("finished", finished);
+    if (finished && !done) { done = true; running = wantRun; last = performance.now(); }
+    if (!finished && done) { done = false; running = false; if (idx !== 0) show(0); }
+    if (!finished && idx !== 0) show(0);
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      var r = track.getBoundingClientRect(), span = track.offsetHeight - window.innerHeight;
+      render(span > 0 ? clamp01(-r.top / span) : 1);
+    });
+  }
+
+  if (track && frameEl && scene && island && notchEl && lid && mac && inner && !reduce) {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", function () { geo = null; onScroll(); });
+    onScroll();
+  } else {
+    document.documentElement.classList.remove("scrub");
+    running = wantRun;
+  }
 
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (es) {
