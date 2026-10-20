@@ -52,3 +52,9 @@ Then open http://localhost:8000. Use a server rather than opening the file direc
 
 - **Mascot shapes:** if the app's shapes change, regenerate `assets/plasmie-shapes.js` from `app/brand/plasmie-shapes.json` (the states used are hi, idle, ingest, summarize, promote, ask, held, error, busy, quiet, off, success).
 - **PNGs:** serve the site, open `/tools/og.html` at 1200×630 and screenshot the card to `assets/og.png`; open `/tools/icons.html` and screenshot each image for the icons.
+
+## Credits
+
+Icons are from [Lucide](https://lucide.dev), used under the ISC License.
+Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT).
+All other copyright (c) for Lucide are held by Lucide Contributors 2022.

@@ -479,3 +479,15 @@ section > .wrap { width: 100%; }
   .foot-links ul { grid-template-columns: repeat(3, max-content); column-gap: var(--space-lg); }
   .foot-links li:last-child { grid-column: 1 / -1; }
 }
+
+/* ---------- icons: Lucide, one inline sprite; sized to the text, beside it, never decorative tiles ---------- */
+.icon { width: 1.15em; height: 1.15em; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+/* list rows: the icon sits on the first line, centred on it */
+.icon-list { list-style: none; padding-left: 0; }
+.icon-list li { display: grid; grid-template-columns: 1.15em minmax(0, 1fr); column-gap: 10px; align-items: start; }
+.icon-list .icon, .icon-paras .icon { margin-top: calc((1lh - 1.15em) / 2); color: var(--ink-3); }
+.icon-paras p { display: grid; grid-template-columns: 1.15em minmax(0, 1fr); column-gap: 12px; align-items: start; }
+.facts dt { display: flex; align-items: center; gap: 8px; }
+.facts dt .icon { color: var(--band-ink-2); width: 1.05em; height: 1.05em; }
+.settings-link { gap: 7px; }
+.settings-link .icon { width: 1.05em; height: 1.05em; }
