@@ -160,7 +160,7 @@ section h2 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); letter-spacing: -.01em; ma
 .steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: var(--space-lg); }
 .steps li { counter-increment: s; display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); gap: var(--space-md); color: var(--ink-2); }
 .steps li::before {
-  content: counter(s); font: 800 1.35rem/1 var(--display); color: var(--ink);
+  content: counter(s); font: 800 1.35rem/1 var(--display); color: var(--face);
   width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--body); display: grid; place-items: center; padding-top: 3px;
 }
 .steps b { color: var(--ink); font-weight: 600; }
@@ -342,3 +342,59 @@ footer { scroll-snap-align: end; }
   .lede { font-size: .92rem; }
   .frame { width: min(62%, 230px); }
 }
+
+/* ---------- Ask demo: the app's Ask overlay (DESIGN.md), playing one made-up question ---------- */
+.ask-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: var(--space-xl) clamp(32px, 5vw, 72px); align-items: center; }
+.ask-points { margin: var(--space-lg) 0 0; padding-left: 1.1em; display: grid; gap: var(--space-sm); color: var(--ink-2); max-width: 46ch; }
+.ask-points li::marker { color: var(--blush); }
+.ask-demo { margin: 0; display: grid; gap: var(--space-sm); }
+.ask-demo figcaption { font-size: .85rem; color: var(--ink-3); }
+.ask-panel {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: start;
+  background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 22px; padding: 22px;
+  min-height: 330px;
+}
+/* the blob shrinks once the answer arrives; scaled, not resized, so the panel never reflows */
+.ask-blob { display: block; width: 88px; height: 82px; transform-origin: 0 0; transition: transform .42s var(--glide); }
+.ask-blob svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.ask-demo.answered .ask-blob { transform: scale(.64); }
+.ask-main { display: grid; gap: 10px; min-width: 0; }
+.ask-field {
+  position: relative; display: flex; align-items: center; min-height: 46px; padding: 10px 14px;
+  border: 1.5px solid var(--rule-strong); border-radius: 12px; background: var(--ground);
+  font: 500 1.02rem/1.35 var(--text); color: var(--ink);
+}
+.ask-ph { color: var(--ink-3); }
+.caret { display: none; width: 2px; height: 1.15em; background: var(--blush); margin-left: 1px; }
+.ask-demo.typing .caret { display: inline-block; animation: caret 1s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+.ask-status { font-size: .85rem; color: var(--ink-3); min-height: 1.3em; }
+.ask-answer { font-size: 1rem; line-height: 1.55; color: var(--ink); min-height: 4.6em; }
+.ask-sources { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.ask-sources li {
+  display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--ink);
+  border: 1px solid var(--rule-strong); border-radius: 999px; padding: 4px 10px 4px 4px; background: var(--ground);
+  text-decoration: underline; text-decoration-color: var(--rule-strong); text-underline-offset: 2px;
+}
+.src-kind { font-size: .72rem; font-weight: 600; color: var(--ink-2); background: var(--rule); border-radius: 999px; padding: 2px 7px; text-decoration: none; }
+@media (max-width: 900px) { .ask-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); } }
+@media (max-width: 520px) {
+  .ask-points { margin-top: var(--space-md); font-size: .92rem; }
+  .ask-points li:last-child { display: none; }
+  .ask-panel { padding: 14px; gap: 12px; min-height: 300px; border-radius: 18px; }
+  .ask-blob { width: 56px; height: 52px; }
+  .ask-demo.answered .ask-blob { transform: scale(.72); }
+  .ask-field { font-size: .9rem; min-height: 40px; padding: 8px 10px; }
+  .ask-answer { font-size: .88rem; line-height: 1.5; }
+  .ask-sources li { font-size: .75rem; }
+}
+@media (prefers-reduced-motion: reduce) { .ask-blob { transition: none; } }
+
+/* install step 3: a small shortcut into System Settings, clearly secondary to Download */
+.settings-link {
+  display: inline-flex; align-items: center; margin-top: 10px;
+  font: 600 .9rem/1 var(--text); color: var(--ink); text-decoration: none;
+  border: 1.5px solid var(--rule-strong); border-radius: 999px; padding: 8px 14px; background: transparent;
+}
+.settings-link:hover { border-color: var(--ink-3); background: var(--surface); }
+.settings-link[hidden] { display: none; }

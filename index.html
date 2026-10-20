@@ -144,17 +144,30 @@
     </div>
   </section>
 
-  <section aria-labelledby="h-shapes">
-    <div class="wrap">
-      <h2 id="h-shapes">Its shape is its status.</h2>
-      <p class="intro">Plasmie changes shape to show what it’s doing. Glance at the notch and you know.</p>
-      <ul class="shapes">
-        <li><span class="mini" data-plasmie="held" role="img" aria-label="Plasmie raising a hand, with an exclamation mark"></span><b>Hand up</b><p>Notes are waiting for your OK.</p></li>
-        <li><span class="mini" data-plasmie="error" role="img" aria-label="Plasmie melted into a puddle, looking worried"></span><b>Puddle</b><p>A connector needs attention.</p></li>
-        <li><span class="mini" data-plasmie="busy" role="img" aria-label="Plasmie shaped like an hourglass"></span><b>Hourglass</b><p>Your Mac is busy. Jobs will wait.</p></li>
-        <li><span class="mini" data-plasmie="quiet" role="img" aria-label="Plasmie flattened and asleep"></span><b>Flat and asleep</b><p>Nothing new for a while.</p></li>
-        <li><span class="mini" data-plasmie="off" role="img" aria-label="Plasmie as a small grey ball"></span><b>Grey ball</b><p>All connectors are off.</p></li>
-      </ul>
+  <section id="ask" aria-labelledby="h-ask">
+    <div class="wrap ask-grid">
+      <div>
+        <h2 id="h-ask">Just ask.</h2>
+        <p class="intro">Press <kbd>⌃⌥⌘K</kbd> in any app and ask about your work. Plasmie answers from your notes, on device, and shows the notes it used.</p>
+        <ul class="ask-points">
+          <li>Answers come only from what’s in your notes. It won’t fill gaps with guesses.</li>
+          <li>Every source is a link. Click one to open the note.</li>
+          <li>Nothing leaves your Mac to answer.</li>
+        </ul>
+      </div>
+      <!-- Demo of the Ask overlay, played by assets/ask-demo.js. Everything in it is made up. -->
+      <figure class="ask-demo" id="ask-demo" aria-label="Example: asking Plasmie what was decided about the release checklist">
+        <div class="ask-panel">
+          <span class="ask-blob" id="ask-blob" data-plasmie="idle"></span>
+          <div class="ask-main">
+            <div class="ask-field"><span id="ask-q"></span><span class="caret" aria-hidden="true"></span><span class="ask-ph" id="ask-ph">Ask about your work</span></div>
+            <p class="ask-status" id="ask-status">⌃⌥⌘K</p>
+            <p class="ask-answer" id="ask-a"></p>
+            <ul class="ask-sources" id="ask-src"></ul>
+          </div>
+        </div>
+        <figcaption>Example with made-up notes.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -208,7 +221,12 @@
                  for an app that isn't from the App Store. Edit or remove them when
                  the install no longer needs Open Anyway. -->
             <li><p>Open Plasmie from Applications. When your Mac warns you, click <b>Done</b>.</p></li>
-            <li><p>Go to <b>System Settings › Privacy &amp; Security</b>. Click <b>Open Anyway</b> and enter your password. You only do this once.</p></li>
+            <li><div>
+              <p>Go to <b>System Settings › Privacy &amp; Security</b>. Click <b>Open Anyway</b> and enter your password. You only do this once.</p>
+              <!-- Shortcut for Mac visitors only; the text above stays the instruction. -->
+              <a class="settings-link" id="open-privacy" href="x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension" hidden>Open Privacy &amp; Security</a>
+              <script>(function () { var ua = navigator.userAgent || "", pf = navigator.platform || ""; if (/Mac/.test(pf) || /Macintosh/.test(ua)) { if (!(navigator.maxTouchPoints > 1)) document.getElementById("open-privacy").hidden = false; } })();</script>
+            </div></li>
             <!-- /INSTALL-PROMPT -->
             <li><p>Plasmie checks your Mac, asks where to keep your notes, and sets itself up. You can keep working while it does.</p></li>
           </ol>
@@ -238,5 +256,6 @@
 <script src="/assets/plasmie-shapes.js" defer></script>
 <script src="/assets/plasmie.js" defer></script>
 <script src="/assets/theme.js" defer></script>
+<script src="/assets/ask-demo.js" defer></script>
 </body>
 </html>

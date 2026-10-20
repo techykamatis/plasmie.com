@@ -191,6 +191,9 @@
     host.__blob = B; blobs.push(B);
   });
 
+  /* let other scripts (the Ask demo) change a blob's shape */
+  window.Plasmie = { morph: function (host, state) { if (host && host.__blob) morph(host.__blob, state); } };
+
   /* the hero blob cycles through a day of states */
   var hero = document.getElementById("hero-blob");
   var caption = document.getElementById("hero-caption"), pause = document.getElementById("hero-pause");

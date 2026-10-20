@@ -14,6 +14,7 @@ Plain static HTML and CSS, a little JavaScript for the animated mascot, no frame
 | `.nojekyll` | Serve files as they are, no Jekyll |
 | `assets/site.css` | All styles. Colours and fonts come from the app's brand (DESIGN.md in the app repo) |
 | `assets/plasmie.js` | Draws the mascot with the app's own renderer (ported from its brand sheet), and plays the scroll-driven opening: the MacBook opens, zooms into the notch, the notch grows into the island, Plasmie pops out |
+| `assets/ask-demo.js` | The looping Ask demo (made-up question, answer and sources), played only while on screen |
 | `assets/theme.js` | Light / dark / auto switch in the header. Auto follows the system; a choice is remembered in that browser |
 | `assets/plasmie-shapes.js` | Mascot shape data, generated from the app's `app/brand/plasmie-shapes.json`. Don't hand-edit |
 | `assets/plasmie.svg`, `plasmie.png` | Static mascot |
@@ -35,6 +36,7 @@ Then open http://localhost:8000. Use a server rather than opening the file direc
 - **Download link.** Both "Download for Mac" buttons in `index.html` point to the placeholder `/download/Plasmie.dmg`. Search for `TODO(download)` and replace both with the real DMG URL (for example a GitHub release asset: `https://github.com/OWNER/REPO/releases/latest/download/Plasmie.dmg`).
 - **Install steps.** The "Open Anyway" steps sit between `INSTALL-PROMPT` comments in `index.html`. Edit or remove them when the install no longer needs that step.
 - **GitHub.** The header and footer show "GitHub · Coming soon" as plain text, not a link. Search for `TODO(github)` and turn both into `<a href>` links when the repo is public.
+- **Privacy & Security shortcut.** Install step 3 has an "Open Privacy & Security" button (`x-apple.systempreferences:` link), shown only on Macs. It sits inside the `INSTALL-PROMPT` markers, so it goes when those steps go.
 - **Version.** `0.11.0` appears in the hero and the footer.
 
 ## Deploy (GitHub Pages)
