@@ -222,7 +222,7 @@ footer .wrap { align-items: center; display: flex; flex-wrap: wrap; justify-cont
 .screen { position: relative; height: 100%; background: var(--mac-screen); border-radius: 6px 6px 2px 2px; }
 .menubar { height: 5%; background: var(--mac-bar); border-radius: 6px 6px 0 0; }
 /* the notch reaches up into the bezel so no seam shows between them, even zoomed in */
-.notch-cut { position: absolute; top: -6px; left: 50%; width: 15%; height: calc(5.6% + 6px); transform: translateX(-50%); background: var(--bezel); border-radius: 0 0 6px 6px; }
+.notch-cut { position: absolute; top: -2px; left: 50%; width: 15%; height: calc(5.6% + 2px); transform: translateX(-50%); background: var(--bezel); border-radius: 0 0 6px 6px; }
 .deck {
   position: absolute; left: 0; right: 0; top: 100%; aspect-ratio: 16 / 10.4;
   background: var(--mac-alu); border-radius: 4px 4px 14px 14px; transform-style: preserve-3d;
