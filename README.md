@@ -14,6 +14,7 @@ Plain static HTML and CSS, a little JavaScript for the animated mascot, no frame
 | `.nojekyll` | Serve files as they are, no Jekyll |
 | `assets/site.css` | All styles. Colours and fonts come from the app's brand (DESIGN.md in the app repo) |
 | `assets/plasmie.js` | Draws the mascot with the app's own renderer (ported from its brand sheet), and plays the scroll-driven opening: the MacBook opens, zooms into the notch, the notch grows into the island, Plasmie pops out |
+| `assets/map.js` | Plasmie's map section: a port of the app's map (layout, drawing, space backdrop and opening) over made-up notes. The section pins: the opening plays, then the web moves left and the sentence fades in |
 | `assets/ask-demo.js` | The looping Ask demo (made-up question, answer and sources), played only while on screen |
 | `assets/theme.js` | Light / dark / auto switch in the header. Auto follows the system; a choice is remembered in that browser |
 | `assets/plasmie-shapes.js` | Mascot shape data, generated from the app's `app/brand/plasmie-shapes.json`. Don't hand-edit |
