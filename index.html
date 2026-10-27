@@ -126,8 +126,18 @@
           <p class="fine">Version <span data-plasmie-version>0.11.0</span>. Requires a Mac with Apple silicon and macOS&nbsp;26 or later, with Apple Intelligence turned on.</p>
         </div>
       </div>
+      <!-- Shapes Plasmie cycles through after it pops out. Data only: the blob morphs
+           through them, but no status sentence is shown for each. -->
       <ul id="hero-states" aria-hidden="true">
-        <li data-state="hi"><b>Hi!</b> I’m Plasmie.</li>
+        <li data-state="hi"></li>
+        <li data-state="idle"></li>
+        <li data-state="ingest"></li>
+        <li data-state="summarize"></li>
+        <li data-state="promote"></li>
+        <li data-state="ask"></li>
+        <li data-state="held"></li>
+        <li data-state="busy"></li>
+        <li data-state="quiet"></li>
       </ul>
     </div>
   </div>
