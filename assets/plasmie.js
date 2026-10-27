@@ -207,7 +207,7 @@
   var caption = document.getElementById("hero-caption"), pause = document.getElementById("hero-pause");
   var CYCLE = [];
   document.querySelectorAll("#hero-states li").forEach(function (li) { CYCLE.push([li.getAttribute("data-state"), li.innerHTML]); });
-  var idx = 0, running = false, wantRun = !reduce && CYCLE.length > 0, last = 0;
+  var idx = 0, running = false, wantRun = !reduce && CYCLE.length > 1, last = 0;
 
   function show(i) {
     idx = i;
