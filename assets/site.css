@@ -83,10 +83,11 @@ kbd { font: inherit; white-space: nowrap; }
 
 /* ---------- hero ---------- */
 .hero {
-  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
-  gap: var(--space-xl); align-items: center;
+  display: grid; justify-items: center; align-content: center;
+  gap: var(--space-lg);
   padding-block: clamp(24px, 6vw, 72px) clamp(32px, 6vw, 80px);
 }
+.hero .stage { width: 100%; }
 .hero h1 { font-size: clamp(4.5rem, 15vw, 10.5rem); line-height: .86; letter-spacing: -.025em; margin-left: -.04em; }
 .lede { margin-top: var(--space-lg); font-size: clamp(1.2rem, 2vw, 1.45rem); line-height: 1.5; max-width: 36ch; color: var(--ink-2); }
 .get { margin-top: var(--space-xl); display: grid; gap: 12px; justify-items: start; }
@@ -101,16 +102,70 @@ kbd { font: inherit; white-space: nowrap; }
 .fine { font-size: .95rem; color: var(--ink-3); max-width: 44ch; line-height: 1.5; }
 
 .stage { display: grid; justify-items: center; gap: var(--space-sm); }
-.frame { position: relative; width: min(100%, 440px); aspect-ratio: 1; }
+.frame { position: relative; width: min(90%, 480px); margin-inline: auto; aspect-ratio: 1; }
 .stage button.blob { all: unset; cursor: pointer; position: absolute; inset: 0; display: block; z-index: 2; }
 .stage button.blob:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; border-radius: 24px; }
-.stage svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.stage > .frame svg { width: 100%; height: 100%; overflow: visible; display: block; }
 .caption-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; column-gap: 12px; min-height: 3.2em; max-width: 40ch; }
 #hero-caption { font-size: 1rem; line-height: 1.45; color: var(--ink-2); text-align: center; }
 #hero-caption b { font: 700 1.1rem/1 var(--display); color: var(--ink); }
 .pause { appearance: none; background: none; border: 0; padding: 4px 2px; font: 500 .9rem var(--text); color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; flex: none; }
 .pause:hover { color: var(--ink); }
 #hero-states { display: none; }
+
+/* closed lid, before you scroll: a buzz that builds to an almost-pop, like it wants out */
+.scrub .frame.shut .mac { animation: mac-buzz 1.9s ease-in-out infinite; transform-origin: 50% 72%; }
+@keyframes mac-buzz {
+  0%, 24%, 58%, 100% { transform: translate(0, 0) rotate(0) scale(1); }
+  4%  { transform: translate(-1px, 1px) rotate(-.45deg); }
+  8%  { transform: translate(1px, -1px) rotate(.45deg); }
+  12% { transform: translate(-1.5px, 1px) rotate(-.6deg); }
+  16% { transform: translate(1.5px, -1px) rotate(.6deg); }
+  20% { transform: translate(-1px, 1px) rotate(-.4deg); }
+  66% { transform: translate(0, -2px) rotate(0) scale(1.012); }
+  70% { transform: translate(2px, -3px) rotate(1deg) scale(1.02); }
+  74% { transform: translate(-2px, -3px) rotate(-1deg) scale(1.02); }
+  78% { transform: translate(0, -1px) rotate(0) scale(1.006); }
+}
+
+/* "scroll to open" hint, only while the lid is shut */
+.scroll-cue { display: none; }
+.scrub .scroll-cue {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 2px;
+  font: 600 .82rem/1 var(--text); letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-3); opacity: 0; transition: opacity .45s var(--glide);
+}
+.scrub .scroll-cue svg { width: 15px; height: 15px; animation: cue-bob 1.8s ease-in-out infinite; }
+.scrub .frame.shut ~ .scroll-cue { opacity: .8; }
+@keyframes cue-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+
+/* Plasmie's own header: hidden through the whole opening, then fades in right under
+   it the moment it's out of the laptop and says hi (frame gets .finished). */
+.lede-head {
+  display: grid; justify-items: center; text-align: center; gap: 4px;
+  margin-top: 6px; opacity: 0; transform: translateY(8px);
+  transition: opacity .5s var(--glide) .1s, transform .5s var(--glide) .1s;
+}
+.scrub .frame:not(.finished) ~ .lede-head { pointer-events: none; }
+.scrub .frame.finished ~ .lede-head { opacity: 1; transform: translateY(0); }
+.lede-head h1 { font-size: clamp(2.6rem, 6vw, 4rem); line-height: .9; letter-spacing: -.025em; }
+.lede-head .tagline { margin-top: 2px; font: 700 clamp(1.05rem, 2vw, 1.3rem)/1.2 var(--display); color: var(--ink); max-width: 24ch; }
+.lede-head .lede { margin-top: 2px; font-size: clamp(.92rem, 1.4vw, 1.05rem); max-width: 40ch; }
+.lede-head .get { justify-items: center; margin-top: var(--space-md); gap: 8px; }
+.lede-head .button { padding: 13px 22px 11px; font-size: 1rem; }
+.lede-head .fine, .lede-head .phone-note { font-size: .82rem; }
+
+/* not scrubbed (reduced motion or no JS opening): show the header plainly, laptop already open */
+html:not(.scrub) .lede-head { opacity: 1; transform: none; }
+
+@media (max-width: 640px) {
+  .lede-head h1 { font-size: clamp(2.1rem, 11vw, 3rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrub .frame.shut .mac { animation: none; }
+  .scrub .scroll-cue svg { animation: none; }
+}
 
 /* ---------- sections ---------- */
 section { padding-block: clamp(64px, 9vw, 112px); }
@@ -286,9 +341,12 @@ section > .wrap { width: 100%; }
 .lede { margin-top: var(--space-md); }
 @media (max-width: 520px) { .tagline { font-size: 1.45rem; margin-top: var(--space-sm); } .lede { font-size: 1.02rem; } .hero h1 { font-size: 4.2rem; } }
 
-/* scroll-driven opening: the hero pins while the track scrolls past */
+/* scroll-driven opening: the hero pins while the track scrolls past.
+   260svh plays the opening itself (matches plasmie.js's ANIM_VH); the extra 70svh is a
+   dwell, held at the finished frame so Plasmie's "hi" and the header under it are
+   actually readable before the page moves on. */
 .hero-track { position: relative; }
-.scrub .hero-track { height: 260svh; }
+.scrub .hero-track { height: 330svh; }
 .scrub .hero-pin { position: sticky; top: 0; height: 100svh; display: grid; align-content: center; overflow: hidden; }
 .scrub .hero-pin .hero { min-height: 0; width: 100%; }
 /* the track is one tall snap area, so you can scrub freely inside it; it starts at the very top */

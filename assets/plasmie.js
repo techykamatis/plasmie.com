@@ -331,6 +331,7 @@
     }
     var finished = p >= 0.94;
     frameEl.classList.toggle("finished", finished);
+    frameEl.classList.toggle("shut", p < 0.012);   // closed and buzzing, before the first scroll
     // in the notch and on the way out Plasmie rests; it says hi once the rotation starts
     if (finished && !done) { done = true; show(0); running = wantRun; last = performance.now(); }
     if (!finished) {
@@ -427,12 +428,17 @@
     });
   }
 
+  // The opening itself always plays over ANIM_VH of scrolling (matches site.css's 260svh
+  // track minus the 100svh pin = 160vh), no matter how much extra "dwell" height the track
+  // has beyond that. Scrolling past the opening just holds p at 1 (frame stays .finished)
+  // until the track runs out, so the header under Plasmie has room to actually be read.
+  var ANIM_VH = 1.6;
   var ticking = false;
   function onScroll() {
     if (ticking) return; ticking = true;
     requestAnimationFrame(function () {
       ticking = false;
-      var r = track.getBoundingClientRect(), span = track.offsetHeight - window.innerHeight;
+      var r = track.getBoundingClientRect(), span = window.innerHeight * ANIM_VH;
       render(span > 0 ? clamp01(-r.top / span) : 1);
     });
   }
@@ -442,7 +448,7 @@
     // scroll stops sit where the animation reaches each stage (see .hero-stop)
     var stops = track.querySelectorAll(".hero-stop");
     function placeStops() {
-      var span = track.offsetHeight - window.innerHeight;
+      var span = window.innerHeight * ANIM_VH;
       stops.forEach(function (el) { el.style.top = Math.round(parseFloat(el.getAttribute("data-p")) * span) + "px"; });
     }
     placeStops();
